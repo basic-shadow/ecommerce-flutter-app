@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 # ecommerce_app
 
 A new Flutter project.
+=======
+# flutter_app
+
+A new Flutter application.
+>>>>>>> 2fe67338b0087b4867ea8969c0e36d3083888a60
 
 ## Getting Started
 
