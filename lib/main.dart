@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './screens/browse.dart';
 import './screens/login.dart';
+import './screens/item.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -11,19 +12,31 @@ void main() {
           textTheme: TextTheme(
               headline1: TextStyle(
                   fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w400,
                   color: Colors.black),
+              headline3: TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 1.0,
+                  color: Colors.grey),
               headline4: TextStyle(
-                  fontSize: 25.0,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 19.0,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 1.0,
                   color: Colors.black),
+              headline5: TextStyle(
+                  fontSize: 15.0,
+                  letterSpacing: 1.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white),
               headline6: TextStyle(
-                  fontSize: 5.0,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black))),
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.green))),
       initialRoute: '/',
       routes: {
         '/': (context) => Browse(),
         '/login': (context) => Login(),
+        '/item': (context) => Item(),
       }));
 }
