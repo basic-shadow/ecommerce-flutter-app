@@ -30,6 +30,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
     'Accessories'
   ];
 
+  TextEditingController _controller;
   void initState() {
     super.initState();
 
@@ -37,11 +38,6 @@ class _BrowseScreenState extends State<BrowseScreen> {
     final List<String> brands = [
       'Adidas',
       'Nike',
-      'L/V',
-      'D/G',
-      'NewB',
-      'Loki',
-      'Thor'
     ];
     final List<String> prices = List.generate(10, (i) {
       int val = Random().nextInt(100);
@@ -54,9 +50,16 @@ class _BrowseScreenState extends State<BrowseScreen> {
             title: clothes[i % clothes.length],
             brand: brands[i % brands.length],
             price: prices[i % prices.length]));
+
+    _controller = TextEditingController();
   }
 
   int _value = 10;
+
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,13 +80,50 @@ class _BrowseScreenState extends State<BrowseScreen> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5.0),
                   border: Border.all(width: 1.0, color: Colors.black26)),
-              child: TextField(
-                maxLines: 1,
-                decoration: InputDecoration(
-                    hintText: "Search",
-                    border: InputBorder.none,
-                    suffixIcon: Icon(Icons.search),
-                    contentPadding: EdgeInsets.all(12.0)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: TextField(
+                      style: Theme.of(context).textTheme.headline3,
+                      controller: _controller,
+                      maxLines: 1,
+                      onSubmitted: (String val) {
+                        print(val);
+                      },
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(width: 2.0, color: Colors.greenAccent),
+                        ),
+                        hintText: "Search",
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.all(12.0),
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    color: Colors.black,
+                    icon: Icon(Icons.search, size: 20),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                                title: Text("Pressed Search"),
+                                content:
+                                    Text("You searched ${_controller.text}"),
+                                actions: [
+                                  FlatButton(
+                                      child: Text("Continue"),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      }),
+                                ]);
+                          });
+                    },
+                  ),
+                ],
               )),
         ),
         Container(
@@ -95,20 +135,19 @@ class _BrowseScreenState extends State<BrowseScreen> {
             itemCount: list.length,
             itemBuilder: (context, index) => Container(
               decoration: BoxDecoration(
-                border: Border.all(width: 2.0, color: Colors.green[200]),
+                border: Border.all(width: 3.0, color: Colors.green[200]),
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(15.0),
               ),
               margin: EdgeInsets.only(left: 10.0),
-              width: 120,
+              width: 130,
               child: ChoiceChip(
                 backgroundColor: Colors.white,
                 selectedColor: Colors.green[300],
                 labelStyle: _value == index
                     ? Theme.of(context).textTheme.headline5
-                    : Theme.of(context).textTheme.headline4,
+                    : Theme.of(context).textTheme.headline3,
                 label: Container(
-                    width: 120,
                     child: Transform.translate(
                         offset: Offset(0, -3),
                         child: Center(child: Text(list[index])))),
@@ -124,7 +163,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
         ),
         Container(
           height: 0.8,
-          child: Container(height: 0.8, color: Colors.grey),
+          child: Container(height: 0.8, color: Colors.grey[300]),
           decoration: BoxDecoration(boxShadow: [
             BoxShadow(
               color: Colors.grey,
@@ -133,18 +172,21 @@ class _BrowseScreenState extends State<BrowseScreen> {
           ]),
         ),
         Expanded(
-          child: GridView.count(
-            physics: ClampingScrollPhysics(),
-            padding: EdgeInsets.only(top: 15.0, left: 2.0, right: 2.0),
-            childAspectRatio: MediaQuery.of(context).size.height /
-                MediaQuery.of(context).size.width /
-                3.0,
-            mainAxisSpacing: 10.0,
-            shrinkWrap: true,
-            crossAxisCount: 2,
-            children: List.generate(10, (i) {
-              return MyCards(products[i]);
-            }),
+          child: Container(
+            color: Colors.blueGrey[50],
+            child: GridView.count(
+              physics: ClampingScrollPhysics(),
+              padding: EdgeInsets.only(top: 15.0, left: 2.0, right: 2.0),
+              childAspectRatio: MediaQuery.of(context).size.height /
+                  MediaQuery.of(context).size.width /
+                  3.0,
+              mainAxisSpacing: 10.0,
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              children: List.generate(10, (i) {
+                return MyCards(products[i]);
+              }),
+            ),
           ),
         ),
       ],
@@ -163,7 +205,8 @@ class MyCards extends StatelessWidget {
         elevation: 1.0,
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
+          borderRadius: BorderRadius.circular(8.0),
+          side: BorderSide(width: 2.0, color: Colors.grey[200]),
         ),
         child: InkWell(
           onTap: () {
@@ -172,17 +215,20 @@ class MyCards extends StatelessWidget {
           child: Column(
             children: [
               Expanded(
-                child: Image.asset(
-                  "assets/clothes.jpeg",
-                  fit: BoxFit.cover,
+                child: Hero(
+                  tag: product.title,
+                  child: Image.asset(
+                    "assets/clothes.jpeg",
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               Container(
                 padding: EdgeInsets.only(
                     top: 15.0, left: 5.0, right: 5.0, bottom: 15.0),
                 decoration: BoxDecoration(
-                  color: Colors.blueGrey[50],
-                  borderRadius: BorderRadius.circular(15.0),
+                  color: Colors.grey[200],
+                  border: Border.all(width: 1.0, color: Colors.blueGrey[100]),
                 ),
                 child: Column(
                   children: [
@@ -191,7 +237,7 @@ class MyCards extends StatelessWidget {
                     Align(
                       alignment: Alignment.topLeft,
                       child: Text(product.brand,
-                          style: Theme.of(context).textTheme.headline3),
+                          style: Theme.of(context).textTheme.subtitle1),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -201,7 +247,7 @@ class MyCards extends StatelessWidget {
                           style: Theme.of(context).textTheme.headline6,
                         ),
                         FlatButton(
-                          color: Colors.green[200],
+                          color: Colors.green[300],
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
@@ -212,7 +258,7 @@ class MyCards extends StatelessWidget {
                               style: TextStyle(color: Colors.white)),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),

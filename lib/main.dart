@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './screens/browse.dart';
 import './screens/login.dart';
 import './screens/item.dart';
+import './screens/checkout.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -12,13 +13,18 @@ void main() {
           textTheme: TextTheme(
               headline1: TextStyle(
                   fontSize: 30.0,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w500,
                   color: Colors.black),
-              headline3: TextStyle(
+              subtitle1: TextStyle(
                   fontSize: 12.0,
                   fontWeight: FontWeight.w400,
                   letterSpacing: 1.0,
                   color: Colors.grey),
+              headline3: TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 1.0,
+                  color: Colors.black),
               headline4: TextStyle(
                   fontSize: 19.0,
                   fontWeight: FontWeight.w400,
@@ -38,5 +44,6 @@ void main() {
         '/': (context) => Browse(),
         '/login': (context) => Login(),
         '/item': (context) => Item(),
+        '/checkout': (context) => Checkout(),
       }));
 }

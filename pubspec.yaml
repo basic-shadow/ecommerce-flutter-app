@@ -49,6 +49,8 @@ flutter:
     - assets/clothes.jpeg
     - assets/icons/menu.svg
     - assets/icons/cart.svg
+    - assets/icons/arrow-down.svg
+    - assets/icons/arrow-up.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
