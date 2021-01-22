@@ -7,10 +7,7 @@ class Browse extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(),
-      body: BrowseScreen(),
-      drawer: MyDrawer(),
-    );
+        appBar: MyAppBar(), body: BrowseScreen(), drawer: MyDrawer());
   }
 }
 
@@ -34,7 +31,8 @@ class _BrowseScreenState extends State<BrowseScreen> {
   void initState() {
     super.initState();
 
-    final List<String> clothes = List.generate(10, (index) => "Title $index");
+    final List<String> clothes =
+        List.generate(10, (index) => "Title ${index + 1}");
     final List<String> brands = [
       'Adidas',
       'Nike',

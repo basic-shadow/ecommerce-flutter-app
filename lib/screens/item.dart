@@ -284,7 +284,8 @@ class _ItemState extends State<Item> {
                             width: 1.5, color: Colors.greenAccent[400])),
                     child: FlatButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/checkout');
+                        Navigator.pushNamed(context, '/checkout',
+                            arguments: product);
                       },
                       child: Text("BUY NOW"),
                     ),
