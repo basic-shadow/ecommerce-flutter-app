@@ -9,14 +9,14 @@ void main() {
       title: "AppName",
       theme: ThemeData(
           primaryColor: Colors.grey[100],
-          fontFamily: 'Yusei',
+          fontFamily: 'Poppins',
           textTheme: TextTheme(
               headline1: TextStyle(
                   fontSize: 30.0,
                   fontWeight: FontWeight.w500,
                   color: Colors.black),
               subtitle1: TextStyle(
-                  fontSize: 12.0,
+                  fontSize: 13.0,
                   fontWeight: FontWeight.w400,
                   letterSpacing: 1.0,
                   color: Colors.grey),
@@ -26,7 +26,7 @@ void main() {
                   letterSpacing: 1.0,
                   color: Colors.black),
               headline4: TextStyle(
-                  fontSize: 19.0,
+                  fontSize: 22.0,
                   fontWeight: FontWeight.w400,
                   letterSpacing: 1.0,
                   color: Colors.black),

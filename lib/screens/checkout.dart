@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ecommerce_app/product.dart';
+import 'package:ecommerce_app/utils/product.dart';
 import 'package:ecommerce_app/screens/drawer.dart';
 import 'package:ecommerce_app/screens/payment.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -81,7 +81,9 @@ class _CheckoutState extends State<Checkout> {
 
   @override
   Widget build(BuildContext context) {
-    final Product product = ModalRoute.of(context).settings.arguments;
+    final Map<String, Object> prods = ModalRoute.of(context).settings.arguments;
+    final Product product = prods['product'];
+    final int _quantity = prods['quantity'];
 
     return Scaffold(
         appBar: MyAppBar(),
@@ -106,7 +108,7 @@ class _CheckoutState extends State<Checkout> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Flexible(
-                        flex: 3,
+                        flex: 4,
                         child: Row(
                           children: [
                             Container(
@@ -140,7 +142,7 @@ class _CheckoutState extends State<Checkout> {
                         ),
                       ),
                       Flexible(
-                        flex: 3,
+                        flex: 4,
                         child: Row(
                           children: [
                             Container(
@@ -275,7 +277,7 @@ class _CheckoutState extends State<Checkout> {
                           Row(
                             children: [
                               Flexible(
-                                flex: 5,
+                                flex: 4,
                                 child: DropdownButtonFormField(
                                   decoration: InputDecoration(
                                     labelText: "Country",
@@ -301,7 +303,7 @@ class _CheckoutState extends State<Checkout> {
                                 ),
                               ),
                               Flexible(
-                                flex: 5,
+                                flex: 4,
                                 child: Container(
                                   margin: EdgeInsets.only(left: 5.0),
                                   child: DropdownButtonFormField(
@@ -331,9 +333,9 @@ class _CheckoutState extends State<Checkout> {
                                   ),
                                 ),
                               ),
-                              Spacer(),
+                              SizedBox(width: 8.0),
                               Flexible(
-                                flex: 3,
+                                flex: 2,
                                 child: Transform.translate(
                                   offset: Offset(0, 11.0),
                                   child: TextFormField(
@@ -377,7 +379,7 @@ class _CheckoutState extends State<Checkout> {
                                           color: Colors.greenAccent[400])),
                                   child: FlatButton(
                                     onPressed: () {
-                                      Navigator.pushNamed(context, '/checkout');
+                                      Navigator.pop(context);
                                     },
                                     child: Text("Back to Cart"),
                                   ),
@@ -411,7 +413,7 @@ class _CheckoutState extends State<Checkout> {
                 ),
               ],
             ),
-            PaymentDetails(product, _controller),
+            PaymentDetails(product, _controller, _quantity),
           ],
         ));
   }

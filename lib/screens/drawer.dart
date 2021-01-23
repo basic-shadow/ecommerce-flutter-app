@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class MyDrawer extends StatelessWidget {
+class MyDrawer extends StatefulWidget {
+  @override
+  _MyDrawerState createState() => _MyDrawerState();
+}
+
+class _MyDrawerState extends State<MyDrawer> {
   final List<String> uplist = [
     'Browse',
     'My orders',
@@ -103,7 +108,18 @@ class MyDrawer extends StatelessWidget {
   }
 }
 
-class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
+class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
+  final bool added;
+
+  const MyAppBar({Key key, this.added}) : super(key: key);
+  @override
+  _MyAppBarState createState() => _MyAppBarState();
+
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+}
+
+class _MyAppBarState extends State<MyAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -126,16 +142,15 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: IconButton(
-            icon: SvgPicture.asset('assets/icons/cart.svg', height: 28),
-            onPressed: () {
-              print("Clicked Cart");
-            },
-          ),
+              onPressed: () {
+                print("Clicked Cart");
+                print(widget.added);
+              },
+              icon: SvgPicture.asset('assets/icons/cart.svg',
+                  height: 28,
+                  color: widget.added ? Colors.tealAccent[700] : Colors.black)),
         ),
       ],
     );
   }
-
-  @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }

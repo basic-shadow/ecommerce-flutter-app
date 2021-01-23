@@ -1,4 +1,4 @@
-import 'package:ecommerce_app/product.dart';
+import 'package:ecommerce_app/utils/product.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/screens/drawer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,15 +14,18 @@ class _ItemState extends State<Item> {
   final List<String> colors = ["BLACK", "WHITE", "BLUE", "GREEN", "RED"];
   int _selectedSize = 1;
   int _selectedColors = 1;
-  int _counter = 1;
+  int _quantity = 1;
+  bool added = false;
 
   @override
   Widget build(BuildContext context) {
-    final Product product = ModalRoute.of(context).settings.arguments;
+    final List arguments = ModalRoute.of(context).settings.arguments;
+    final Product product = arguments[0];
+    bool cartAdded = arguments[1];
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: MyAppBar(),
+      appBar: MyAppBar(added: cartAdded),
       drawer: MyDrawer(),
       body: Container(
         child: ListView(
@@ -128,7 +131,7 @@ class _ItemState extends State<Item> {
                 child: Row(
                   children: [
                     SizedBox(
-                        width: 55,
+                        width: 65,
                         child: Text("Size",
                             style: Theme.of(context).textTheme.headline3)),
                     Expanded(
@@ -144,7 +147,8 @@ class _ItemState extends State<Item> {
                               selected: _selectedSize == index,
                               onSelected: (bool selected) {
                                 setState(() {
-                                  _selectedSize = selected ? index : null;
+                                  _selectedSize =
+                                      selected ? index : _selectedSize;
                                 });
                               },
                               label: Container(
@@ -169,7 +173,7 @@ class _ItemState extends State<Item> {
                 child: Row(
                   children: [
                     SizedBox(
-                        width: 55,
+                        width: 65,
                         child: Text("Color",
                             style: Theme.of(context).textTheme.headline3)),
                     Expanded(
@@ -185,7 +189,8 @@ class _ItemState extends State<Item> {
                               selected: _selectedColors == index,
                               onSelected: (bool selected) {
                                 setState(() {
-                                  _selectedColors = selected ? index : null;
+                                  _selectedColors =
+                                      selected ? index : _selectedColors;
                                 });
                               },
                               label: Container(
@@ -210,7 +215,7 @@ class _ItemState extends State<Item> {
                   child: Row(
                     children: [
                       SizedBox(
-                        width: 55,
+                        width: 65,
                         child: Text("Quantity"),
                       ),
                       Container(
@@ -229,22 +234,20 @@ class _ItemState extends State<Item> {
                                     size: 25,
                                     color: Colors.deepOrange[700],
                                   )),
-                              onPressed: () {
-                                setState(() {
-                                  if (_counter > 1) {
-                                    _counter--;
-                                  } else {
-                                    _counter = 1;
-                                  }
-                                });
-                              },
+                              onPressed: _quantity > 1
+                                  ? () {
+                                      setState(() {
+                                        _quantity--;
+                                      });
+                                    }
+                                  : null,
                             ),
                           ),
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Text(
-                              "$_counter",
+                              "$_quantity",
                               style: Theme.of(context).textTheme.headline4,
                             ),
                           ),
@@ -261,7 +264,7 @@ class _ItemState extends State<Item> {
                                 )),
                             onPressed: () {
                               setState(() {
-                                _counter++;
+                                _quantity++;
                               });
                             },
                           )
@@ -284,24 +287,52 @@ class _ItemState extends State<Item> {
                             width: 1.5, color: Colors.greenAccent[400])),
                     child: FlatButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/checkout',
-                            arguments: product);
+                        Navigator.pushNamed(context, '/checkout', arguments: {
+                          'product': product,
+                          'quantity': _quantity
+                        });
                       },
                       child: Text("BUY NOW"),
                     ),
                   ),
-                  Container(
-                    height: 30,
-                    width: 140,
-                    decoration: BoxDecoration(
-                        color: Colors.greenAccent[700],
-                        borderRadius: BorderRadius.circular(20.0)),
-                    child: FlatButton(
-                      onPressed: () {},
-                      child: Text("ADD TO CART",
-                          style: Theme.of(context).textTheme.headline5),
-                    ),
-                  ),
+                  added
+                      ? Container(
+                          height: 30,
+                          width: 70,
+                          margin: EdgeInsets.only(right: 20.0),
+                          decoration: BoxDecoration(
+                            color: Colors.greenAccent[700],
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                          child: Transform.translate(
+                            offset: Offset(0, -5.0),
+                            child: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  added = false;
+                                });
+                              },
+                              icon: Icon(Icons.check),
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          height: 30,
+                          width: 150,
+                          decoration: BoxDecoration(
+                              color: Colors.greenAccent[700],
+                              borderRadius: BorderRadius.circular(20.0)),
+                          child: FlatButton(
+                            onPressed: () {
+                              setState(() {
+                                added = true;
+                              });
+                            },
+                            child: Text("ADD TO CART",
+                                style: Theme.of(context).textTheme.headline5),
+                          ),
+                        ),
                 ],
               ),
             )

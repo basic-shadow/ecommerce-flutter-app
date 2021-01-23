@@ -1,24 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/screens/drawer.dart';
 import 'dart:math';
-import 'package:ecommerce_app/product.dart';
+import 'package:ecommerce_app/utils/product.dart';
 
-class Browse extends StatelessWidget {
+class Browse extends StatefulWidget {
+  @override
+  _BrowseState createState() => _BrowseState();
+}
+
+class _BrowseState extends State<Browse> {
+  bool added = false;
+
+  void callback(bool add) {
+    setState(() {
+      added = add;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: MyAppBar(), body: BrowseScreen(), drawer: MyDrawer());
+      appBar: MyAppBar(added: added),
+      body: BrowseScreen(added, callback),
+      drawer: MyDrawer(),
+    );
   }
 }
 
 class BrowseScreen extends StatefulWidget {
+  final bool added;
+  Function(bool) callback;
+  BrowseScreen(this.added, this.callback);
   @override
   _BrowseScreenState createState() => _BrowseScreenState();
 }
 
 class _BrowseScreenState extends State<BrowseScreen> {
   List<Product> products;
-  final List<String> list = [
+  final List<String> filter = [
     'All',
     'New-In',
     'Hot Deals',
@@ -26,6 +45,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
     'Shoes',
     'Accessories'
   ];
+
+  int _value = 0;
+  List<MyCards> cards;
 
   TextEditingController _controller;
   void initState() {
@@ -47,12 +69,13 @@ class _BrowseScreenState extends State<BrowseScreen> {
         (i) => Product(
             title: clothes[i % clothes.length],
             brand: brands[i % brands.length],
-            price: prices[i % prices.length]));
+            price: prices[i % prices.length],
+            type: filter.sublist(1)[i % filter.sublist(1).length]));
 
     _controller = TextEditingController();
-  }
 
-  int _value = 10;
+    cards = List.generate(10, (i) => MyCards(products[i], widget.callback));
+  }
 
   void dispose() {
     _controller.dispose();
@@ -128,9 +151,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
           margin: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
           height: 30,
           child: ListView.builder(
-            physics: ClampingScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
-            itemCount: list.length,
+            itemCount: filter.length,
             itemBuilder: (context, index) => Container(
               decoration: BoxDecoration(
                 border: Border.all(width: 3.0, color: Colors.green[200]),
@@ -148,11 +171,13 @@ class _BrowseScreenState extends State<BrowseScreen> {
                 label: Container(
                     child: Transform.translate(
                         offset: Offset(0, -3),
-                        child: Center(child: Text(list[index])))),
+                        child: Center(child: Text(filter[index])))),
                 selected: _value == index,
                 onSelected: (bool selected) {
                   setState(() {
-                    _value = selected ? index : null;
+                    _value = selected ? index : _value;
+                    print(filter[_value]);
+                    print(widget.added);
                   });
                 },
               ),
@@ -170,21 +195,16 @@ class _BrowseScreenState extends State<BrowseScreen> {
           ]),
         ),
         Expanded(
-          child: Container(
-            color: Colors.blueGrey[50],
-            child: GridView.count(
-              physics: ClampingScrollPhysics(),
-              padding: EdgeInsets.only(top: 15.0, left: 2.0, right: 2.0),
-              childAspectRatio: MediaQuery.of(context).size.height /
-                  MediaQuery.of(context).size.width /
-                  3.0,
-              mainAxisSpacing: 10.0,
-              shrinkWrap: true,
-              crossAxisCount: 2,
-              children: List.generate(10, (i) {
-                return MyCards(products[i]);
-              }),
-            ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: ListView(
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 2.0),
+                children: _value == 0
+                    ? cards
+                    : cards
+                        .where((card) => card.product.type == filter[_value])
+                        .toList()),
           ),
         ),
       ],
@@ -192,13 +212,23 @@ class _BrowseScreenState extends State<BrowseScreen> {
   }
 }
 
-class MyCards extends StatelessWidget {
-  MyCards(this.product);
+// ignore: must_be_immutable
+class MyCards extends StatefulWidget {
+  MyCards(this.product, this.callback);
   final Product product;
+  bool added = false;
+  final Function(bool) callback;
 
   @override
+  _MyCardsState createState() => _MyCardsState();
+}
+
+class _MyCardsState extends State<MyCards> {
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      margin: EdgeInsets.only(top: 15.0),
+      height: 370,
       child: Card(
         elevation: 1.0,
         clipBehavior: Clip.antiAlias,
@@ -208,13 +238,14 @@ class MyCards extends StatelessWidget {
         ),
         child: InkWell(
           onTap: () {
-            Navigator.pushNamed(context, '/item', arguments: product);
+            Navigator.pushNamed(context, '/item',
+                arguments: [widget.product, widget.added]);
           },
           child: Column(
             children: [
               Expanded(
                 child: Hero(
-                  tag: product.title,
+                  tag: widget.product.title,
                   child: Image.asset(
                     "assets/clothes.jpeg",
                     fit: BoxFit.cover,
@@ -230,32 +261,67 @@ class MyCards extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    Text(product.title,
+                    Text(widget.product.title,
                         style: Theme.of(context).textTheme.headline4),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(product.brand,
-                          style: Theme.of(context).textTheme.subtitle1),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(widget.product.brand,
+                            style: Theme.of(context).textTheme.subtitle1),
+                      ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          product.price,
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                        FlatButton(
-                          color: Colors.green[300],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widget.product.price,
+                            style: TextStyle(
+                              fontSize: 25.0,
+                              color: Colors.green[400],
+                            ),
                           ),
-                          onPressed: () {
-                            print("Added to Cart");
-                          },
-                          child: Text("Add to Cart",
-                              style: TextStyle(color: Colors.white)),
-                        ),
-                      ],
+                          widget.added
+                              ? Container(
+                                  height: 30,
+                                  width: 70,
+                                  margin: EdgeInsets.only(right: 20.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.green[400],
+                                    borderRadius: BorderRadius.circular(25.0),
+                                  ),
+                                  child: Transform.translate(
+                                    offset: Offset(0, -5.0),
+                                    child: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          widget.added = false;
+                                          widget.callback(false);
+                                        });
+                                      },
+                                      icon: Icon(Icons.check),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              : FlatButton(
+                                  color: Colors.green[300],
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      widget.added = true;
+                                      widget.callback(true);
+                                    });
+                                  },
+                                  child: Text("Add to Cart",
+                                      style: TextStyle(color: Colors.white)),
+                                ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
