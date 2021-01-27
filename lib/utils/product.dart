@@ -1,12 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Product {
+class Product extends ChangeNotifier {
   final String title;
   final String brand;
   final String price;
   final String type;
+  bool added = false;
   Product({this.title, this.brand, this.price, this.type});
+
+  void toggle() {
+    added = !added;
+    notifyListeners();
+  }
 }
 
 class Position extends ChangeNotifier {

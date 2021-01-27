@@ -12,14 +12,6 @@ class Browse extends StatefulWidget {
 }
 
 class _BrowseState extends State<Browse> {
-  bool added = false;
-
-  void callback(bool add) {
-    setState(() {
-      added = add;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -37,28 +29,24 @@ class _BrowseState extends State<Browse> {
             child: Stack(
           children: [
             MyDrawer(),
-            BrowseScreen(added, callback),
+            BrowseScreen(),
           ],
         )),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, "/login");
-          },
-        ),
       ),
     );
   }
 }
 
 class BrowseScreen extends StatefulWidget {
-  final bool added;
-  Function(bool) callback;
-  BrowseScreen(this.added, this.callback);
   @override
   _BrowseScreenState createState() => _BrowseScreenState();
 }
 
 class _BrowseScreenState extends State<BrowseScreen> {
+  void callback() {
+    setState(() {});
+  }
+
   List<Product> products;
 
   final List<String> filter = [
@@ -98,7 +86,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
 
     _controller = TextEditingController();
 
-    cards = List.generate(10, (i) => MyCards(products[i], widget.callback));
+    cards = List.generate(10, (i) => MyCards(products[i], callback));
   }
 
   void dispose() {
@@ -110,6 +98,20 @@ class _BrowseScreenState extends State<BrowseScreen> {
   Widget build(BuildContext context) {
     final position = context.watch<Position>();
     final productsLength = context.watch<CartList>().products.length;
+
+    NestedScrollView(
+      floatHeaderSlivers: true,
+      headerSliverBuilder: (BuildContext context, bool scrolled) {
+        return [
+          SliverAppBar(
+            pinned: true,
+            floating: true,
+            forceElevated: scrolled,
+            bottom: 
+          )
+        ]
+      },
+    )
 
     return AnimatedContainer(
         curve: Curves.easeInOutCirc,
@@ -137,12 +139,6 @@ class _BrowseScreenState extends State<BrowseScreen> {
                     ),
                   ),
                 ),
-                Positioned(
-                  top: 15,
-                  left: MediaQuery.of(context).size.width / 2.7,
-                  child: Text("Browse",
-                      style: Theme.of(context).textTheme.headline1),
-                ),
                 Padding(
                   padding: const EdgeInsets.only(right: 8.0, top: 8.0),
                   child: Align(
@@ -153,11 +149,13 @@ class _BrowseScreenState extends State<BrowseScreen> {
                             Navigator.pushNamed(context, '/cart',
                                 arguments: context.read<CartList>());
                           },
-                          icon: SvgPicture.asset('assets/icons/cart.svg',
-                              height: 28,
-                              color: widget.added
-                                  ? Colors.tealAccent[700]
-                                  : Colors.black)),
+                          icon: SvgPicture.asset(
+                            'assets/icons/cart.svg',
+                            height: 28,
+                            // color: added.added
+                            //     ? Colors.tealAccent[700]
+                            //     : Colors.black
+                          )),
                       productsLength > 0
                           ? Positioned(
                               right: 0,
@@ -182,7 +180,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
               ],
             ),
             SizedBox(
-              height: 24,
+              height: 10,
             ),
             Center(
               child: Container(
@@ -265,8 +263,6 @@ class _BrowseScreenState extends State<BrowseScreen> {
                     onSelected: (bool selected) {
                       setState(() {
                         _value = selected ? index : _value;
-                        print(filter[_value]);
-                        print(widget.added);
                       });
                     },
                   ),
@@ -305,9 +301,8 @@ class _BrowseScreenState extends State<BrowseScreen> {
 // ignore: must_be_immutable
 class MyCards extends StatefulWidget {
   MyCards(this.product, this.callback);
+  final Function() callback;
   final Product product;
-  bool added = false;
-  final Function(bool) callback;
 
   @override
   _MyCardsState createState() => _MyCardsState();
@@ -334,7 +329,7 @@ class _MyCardsState extends State<MyCards> {
         child: InkWell(
           onTap: () {
             Navigator.pushNamed(context, '/item',
-                arguments: [widget.product, widget.added]);
+                arguments: [widget.product, cartList]);
           },
           child: Column(
             children: [
@@ -382,21 +377,20 @@ class _MyCardsState extends State<MyCards> {
                             curve: Curves.elasticInOut,
                             duration: Duration(milliseconds: 400),
                             height: 30,
-                            width: widget.added ? 70 : 150,
+                            width: widget.product.added ? 70 : 150,
                             decoration: BoxDecoration(
                                 color: Colors.green[500],
                                 borderRadius: BorderRadius.circular(20.0)),
                             child: FlatButton(
                               onPressed: () {
                                 setState(() {
-                                  widget.added = !widget.added;
-
-                                  widget.added
+                                  widget.product.toggle();
+                                  widget.product.added
                                       ? cartList.addProduct(widget.product)
                                       : cartList.removeProduct(widget.product);
                                 });
                               },
-                              child: widget.added
+                              child: widget.product.added
                                   ? Icon(Icons.check, color: Colors.white)
                                   : Text("ADD TO CART",
                                       style: Theme.of(context)
