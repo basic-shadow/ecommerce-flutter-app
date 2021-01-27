@@ -1,5 +1,5 @@
+import 'package:ecommerce_app/utils/product.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class MyDrawer extends StatefulWidget {
   @override
@@ -14,71 +14,85 @@ class _MyDrawerState extends State<MyDrawer> {
     'My Account'
   ];
 
+  final List<Icon> icons = [
+    Icon(Icons.ac_unit),
+    Icon(Icons.ac_unit_rounded),
+    Icon(Icons.backpack),
+    Icon(Icons.cake)
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return Drawer(
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      color: Colors.teal[700],
       child: Container(
-        color: Colors.green[50],
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            ListView(
-              shrinkWrap: true,
-              children: [
-                Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                    color: Colors.green[200],
-                  ),
-                  child: ListView(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Align(
-                          child: Image.asset(
-                            'assets/img1.jpeg',
-                            height: 100,
-                          ),
-                          alignment: Alignment.topLeft,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5.0, horizontal: 30.0),
-                        child: Text("Login"),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5.0, horizontal: 30.0),
-                        child: Text("Email"),
-                      ),
-                    ],
-                  ),
-                ),
-                ListView.separated(
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                        title: Text(uplist[index]),
-                        onTap: () {
-                          print("tapped");
-                        });
-                  },
-                  itemCount: uplist.length,
-                  separatorBuilder: (context, index) => const Divider(
-                    thickness: 1.5,
-                  ),
-                ),
-              ],
-            ),
-            Expanded(child: SizedBox()),
             Container(
-              alignment: Alignment.bottomCenter,
-              color: Colors.white,
+              margin: EdgeInsets.only(top: 18.0),
+              height: 130,
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(15.0),
+                    child: Align(
+                      child: Image.asset(
+                        'assets/img1.jpeg',
+                        height: 100,
+                      ),
+                      alignment: Alignment.topLeft,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 25.0, horizontal: 15.0),
+                    child: Column(
+                      children: [
+                        Text("Login", style: TextStyle(fontSize: 18.0)),
+                        SizedBox(height: 10),
+                        Text(
+                          "Email",
+                          style: TextStyle(color: Colors.black54),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              child: SizedBox(),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+              itemBuilder: (context, index) {
+                return Container(
+                  padding: EdgeInsets.all(15.0),
+                  alignment: Alignment.centerLeft,
+                  child: FlatButton.icon(
+                      icon: icons[index],
+                      label: Text(
+                        uplist[index],
+                      ),
+                      onPressed: () {
+                        print("tapped");
+                      }),
+                );
+              },
+              itemCount: uplist.length,
+            ),
+            Expanded(flex: 3, child: SizedBox()),
+            Container(
+              padding: EdgeInsets.only(bottom: 15.0),
+              child: Row(
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 8.0, left: 8.0, bottom: 8.0),
                     child: FlatButton.icon(
                       label: Text("Settings"),
                       onPressed: () {
@@ -89,14 +103,14 @@ class _MyDrawerState extends State<MyDrawer> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: FlatButton.icon(
-                        label: Text("About"),
-                        onPressed: () {
-                          print("About");
-                        },
-                        icon: Icon(Icons.access_alarms_sharp)),
+                  Container(
+                    width: 1,
+                    height: 20,
+                    color: Colors.black,
+                  ),
+                  FlatButton(
+                    child: Text("Log out"),
+                    onPressed: () {},
                   ),
                 ],
               ),
@@ -104,53 +118,6 @@ class _MyDrawerState extends State<MyDrawer> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
-  final bool added;
-
-  const MyAppBar({Key key, this.added}) : super(key: key);
-  @override
-  _MyAppBarState createState() => _MyAppBarState();
-
-  @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
-}
-
-class _MyAppBarState extends State<MyAppBar> {
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      leading: Builder(
-        builder: (context) => IconButton(
-          icon: SvgPicture.asset(
-            'assets/icons/menu.svg',
-            height: 18,
-          ),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-        ),
-      ),
-      title: Text(
-        "AppName",
-      ),
-      centerTitle: true,
-      actions: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: IconButton(
-              onPressed: () {
-                print("Clicked Cart");
-                print(widget.added);
-              },
-              icon: SvgPicture.asset('assets/icons/cart.svg',
-                  height: 28,
-                  color: widget.added ? Colors.tealAccent[700] : Colors.black)),
-        ),
-      ],
     );
   }
 }
