@@ -102,8 +102,7 @@ class _CheckoutState extends State<Checkout> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Flexible(
-                      flex: 4,
+                    Expanded(
                       child: Row(
                         children: [
                           Container(
@@ -113,31 +112,30 @@ class _CheckoutState extends State<Checkout> {
                               "1",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.green, fontSize: 15.0),
+                                  color: Colors.white, fontSize: 15.0),
                             ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30.0),
-                              border:
-                                  Border.all(width: 2.0, color: Colors.green),
+                              color: Colors.teal[600],
                             ),
                           ),
-                          Text(
-                            "Shipping Address",
-                            style:
-                                TextStyle(color: Colors.green, fontSize: 12.0),
+                          Expanded(
+                            child: Text(
+                              "Shipping Address",
+                              style: TextStyle(
+                                  color: Colors.teal[400], fontSize: 12.0),
+                            ),
                           ),
                         ],
                       ),
                     ),
-                    Flexible(
-                      flex: 2,
+                    Expanded(
                       child: Container(
                         height: 1,
                         color: Colors.blueGrey[800],
                       ),
                     ),
-                    Flexible(
-                      flex: 4,
+                    Expanded(
                       child: Row(
                         children: [
                           Container(
@@ -155,10 +153,12 @@ class _CheckoutState extends State<Checkout> {
                                   width: 2.0, color: Colors.grey[300]),
                             ),
                           ),
-                          Text(
-                            "Payment Details",
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 12.0),
+                          Expanded(
+                            child: Text(
+                              "Payment Details",
+                              style: TextStyle(
+                                  color: Colors.black, fontSize: 12.0),
+                            ),
                           ),
                         ],
                       ),
@@ -215,7 +215,7 @@ class _CheckoutState extends State<Checkout> {
                             contentPadding: EdgeInsets.all(15.0),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  width: 2.0, color: Colors.greenAccent[700]),
+                                  width: 2.0, color: Colors.blueGrey[600]),
                             ),
                             border: OutlineInputBorder(),
                           ),
@@ -231,7 +231,7 @@ class _CheckoutState extends State<Checkout> {
                             contentPadding: EdgeInsets.all(15.0),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  width: 2.0, color: Colors.greenAccent[700]),
+                                  width: 2.0, color: Colors.blueGrey[600]),
                             ),
                             border: OutlineInputBorder(),
                           ),
@@ -247,7 +247,7 @@ class _CheckoutState extends State<Checkout> {
                             contentPadding: EdgeInsets.all(15.0),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  width: 2.0, color: Colors.greenAccent[700]),
+                                  width: 2.0, color: Colors.blueGrey[600]),
                             ),
                             border: OutlineInputBorder(),
                           ),
@@ -263,16 +263,17 @@ class _CheckoutState extends State<Checkout> {
                             contentPadding: EdgeInsets.all(15.0),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  width: 2.0, color: Colors.greenAccent[700]),
+                                  width: 2.0, color: Colors.blueGrey[600]),
                             ),
                             border: OutlineInputBorder(),
                           ),
                         ),
                         SizedBox(height: 20.0),
                         Row(
+                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Flexible(
-                              flex: 4,
+                              flex: 7,
                               child: DropdownButtonFormField(
                                 decoration: InputDecoration(
                                   labelText: "Country",
@@ -297,8 +298,9 @@ class _CheckoutState extends State<Checkout> {
                                 items: countryList,
                               ),
                             ),
+                            Spacer(),
                             Flexible(
-                              flex: 4,
+                              flex: 7,
                               child: Container(
                                 margin: EdgeInsets.only(left: 5.0),
                                 child: DropdownButtonFormField(
@@ -326,32 +328,6 @@ class _CheckoutState extends State<Checkout> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 8.0),
-                            Flexible(
-                              flex: 2,
-                              child: Transform.translate(
-                                offset: Offset(0, 11.0),
-                                child: TextFormField(
-                                  maxLength: 6,
-                                  decoration: InputDecoration(
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          width: 2.0,
-                                          color: Colors.greenAccent[700]),
-                                    ),
-                                    labelText: "ZCode",
-                                    labelStyle: TextStyle(
-                                        color: Colors.black54, fontSize: 12.5),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 7.0),
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 1.0, color: Colors.black)),
-                                  ),
-                                  style: Theme.of(context).textTheme.headline3,
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                         Container(
@@ -366,8 +342,7 @@ class _CheckoutState extends State<Checkout> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20.0),
                                     border: Border.all(
-                                        width: 1.5,
-                                        color: Colors.greenAccent[400])),
+                                        width: 2, color: Colors.blueGrey[300])),
                                 child: FlatButton(
                                   onPressed: () {
                                     Navigator.pop(context);
@@ -379,7 +354,7 @@ class _CheckoutState extends State<Checkout> {
                                 height: 35,
                                 width: 140,
                                 decoration: BoxDecoration(
-                                    color: Colors.greenAccent[700],
+                                    color: Colors.blueGrey[600],
                                     borderRadius: BorderRadius.circular(20.0)),
                                 child: FlatButton(
                                   onPressed: () {

@@ -7,12 +7,7 @@ class MyDrawer extends StatefulWidget {
 }
 
 class _MyDrawerState extends State<MyDrawer> {
-  final List<String> uplist = [
-    'Browse',
-    'My orders',
-    'Categories',
-    'My Account'
-  ];
+  final List<String> list = ['Browse', 'My orders', 'Categories', 'My Account'];
 
   final List<Icon> icons = [
     Icon(Icons.compare, color: Colors.black87),
@@ -20,6 +15,8 @@ class _MyDrawerState extends State<MyDrawer> {
     Icon(Icons.corporate_fare, color: Colors.black87),
     Icon(Icons.contacts, color: Colors.black87)
   ];
+
+  final List<String> links = ["/", "/", "/", "/"];
 
   @override
   Widget build(BuildContext context) {
@@ -82,14 +79,13 @@ class _MyDrawerState extends State<MyDrawer> {
                   alignment: Alignment.centerLeft,
                   child: FlatButton.icon(
                       icon: icons[index],
-                      label: Text(uplist[index],
+                      label: Text(list[index],
                           style: TextStyle(color: Colors.grey[350])),
-                      onPressed: () {
-                        print("tapped");
-                      }),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, links[index])),
                 );
               },
-              itemCount: uplist.length,
+              itemCount: list.length,
             ),
             Expanded(flex: 3, child: SizedBox()),
             Container(

@@ -42,7 +42,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
 
     return Scaffold(
       body: SafeArea(
-          child: Container(
+          child: SingleChildScrollView(
         child: Stack(
           overflow: Overflow.visible,
           children: [
@@ -61,7 +61,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 child: child,
               ),
             ),
-            Container(),
+            Container(height: 680),
             Positioned(
               top: _width / 4,
               width: _width,
@@ -105,7 +105,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                   Icon(Icons.email,
                                       color: edited1
                                           ? Colors.blueGrey[800]
-                                          : Colors.blueGrey[400]),
+                                          : Colors.blueGrey[300]),
                                   Expanded(
                                     child: TextFormField(
                                       onChanged: (String value) {
@@ -140,7 +140,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                   Icon(Icons.lock,
                                       color: edited2
                                           ? Colors.blueGrey[800]
-                                          : Colors.blueGrey[400]),
+                                          : Colors.blueGrey[300]),
                                   SizedBox(width: 5),
                                   Expanded(
                                     child: TextFormField(
@@ -182,6 +182,17 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   ],
                 ),
               ),
+            ),
+            Positioned(
+              top: _width / 2.65,
+              right: _width / 3,
+              width: 300,
+              child: ClipPath(
+                  clipper: Triangle(),
+                  child: Container(
+                    height: 120,
+                    color: Colors.white,
+                  )),
             ),
             Positioned(
               top: 565,
@@ -241,6 +252,24 @@ class DrawClip extends CustomClipper<Path> {
     path.quadraticBezierTo(xCenter, yCenter, yCenter, size.height * 0.60);
     path.lineTo(size.width, 0);
     return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return true;
+  }
+}
+
+class Triangle extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path_0 = Path();
+    path_0.moveTo(size.width * 0.3, size.height * 0.43);
+    path_0.lineTo(size.width * 0.50, size.height * 0.43);
+    path_0.lineTo(size.width * 0.42, size.height * 0.20);
+    path_0.lineTo(size.width * 0.33, size.height * 0.43);
+    path_0.close();
+    return path_0;
   }
 
   @override

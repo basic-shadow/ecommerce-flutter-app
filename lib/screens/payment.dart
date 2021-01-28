@@ -96,8 +96,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Flexible(
-                        flex: 4,
+                      Expanded(
                         child: Row(
                           children: [
                             Container(
@@ -111,27 +110,27 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                               ),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30.0),
-                                border: Border.all(
-                                    width: 2.0, color: Colors.grey[300]),
+                                border:
+                                    Border.all(width: 2.0, color: Colors.black),
                               ),
                             ),
-                            Text(
-                              "Shipping Address",
-                              style: TextStyle(
-                                  color: Colors.black, fontSize: 12.0),
+                            Expanded(
+                              child: Text(
+                                "Shipping Address",
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 12.0),
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      Flexible(
-                        flex: 2,
+                      Expanded(
                         child: Container(
                           height: 1,
                           color: Colors.blueGrey[800],
                         ),
                       ),
-                      Flexible(
-                        flex: 4,
+                      Expanded(
                         child: Row(
                           children: [
                             Container(
@@ -141,18 +140,19 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                                 "2",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    color: Colors.green, fontSize: 15.0),
+                                    color: Colors.white, fontSize: 15.0),
                               ),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30.0),
-                                border:
-                                    Border.all(width: 2.0, color: Colors.green),
+                                color: Colors.teal[600],
                               ),
                             ),
-                            Text(
-                              "Payment Details",
-                              style: TextStyle(
-                                  color: Colors.green, fontSize: 12.0),
+                            Expanded(
+                              child: Text(
+                                "Payment Details",
+                                style: TextStyle(
+                                    color: Colors.teal[400], fontSize: 12.0),
+                              ),
                             ),
                           ],
                         ),
@@ -242,7 +242,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                           style: TextStyle(
                               fontSize: 25.0,
                               fontWeight: FontWeight.w400,
-                              color: Colors.green[700]))
+                              color: Colors.teal[700]))
                     ],
                   ),
                 ),
@@ -258,7 +258,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20.0),
                             border: Border.all(
-                                width: 1.5, color: Colors.greenAccent[400])),
+                                width: 2, color: Colors.blueGrey[300])),
                         child: FlatButton(
                           onPressed: () {
                             widget._controller.animateToPage(
@@ -274,7 +274,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                         height: 35,
                         width: 140,
                         decoration: BoxDecoration(
-                            color: Colors.greenAccent[700],
+                            color: Colors.blueGrey[600],
                             borderRadius: BorderRadius.circular(20.0)),
                         child: FlatButton(
                           onPressed: _pay,

@@ -190,7 +190,7 @@ class _CartState extends State<Cart> {
                             borderRadius: BorderRadius.circular(15),
                           ),
                           color: Colors.teal[400],
-                          onPressed: () {},
+                          onPressed: () => {},
                           child: Text(
                             "Checkout",
                             style: TextStyle(color: Colors.white, fontSize: 16),
@@ -224,8 +224,7 @@ class CartItemsState extends State<CartItems> {
     CartList cartList = ModalRoute.of(context).settings.arguments;
 
     return Container(
-      height: 150,
-      color: Colors.grey[200],
+      height: 170,
       padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
       child: Row(
         children: [

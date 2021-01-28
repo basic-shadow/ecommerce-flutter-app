@@ -68,6 +68,8 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
     final Product product = arguments[0];
     final CartList cartList = arguments[1];
     final _width = MediaQuery.of(context).size.width;
+    final List<Product> list = List();
+    list.add(product);
 
     return Scaffold(
       body: SafeArea(
