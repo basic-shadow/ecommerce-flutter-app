@@ -85,8 +85,8 @@ class _BrowseScreenState extends State<BrowseScreen> {
   }
 
   void dispose() {
-    _controller.dispose();
     super.dispose();
+    _controller.dispose();
   }
 
   @override
@@ -293,7 +293,6 @@ class _BrowseScreenState extends State<BrowseScreen> {
   }
 }
 
-// ignore: must_be_immutable
 class MyCards extends StatefulWidget {
   MyCards(this.product);
   final Product product;

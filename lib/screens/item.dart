@@ -13,7 +13,6 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
   final List<String> colors = ["BLACK", "WHITE", "BLUE", "GREEN", "RED"];
   int _selectedSize = 1;
   int _selectedColors = 1;
-  int _quantity = 1;
   bool isFav = false;
 
   Animation<Color> _animFavcolor;
@@ -69,7 +68,6 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
     final CartList cartList = arguments[1];
     final _width = MediaQuery.of(context).size.width;
     final List<Product> list = List();
-    list.add(product);
 
     return Scaffold(
       body: SafeArea(
@@ -330,14 +328,14 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                                       child: Icon(
                                         Icons.remove,
                                         size: 25,
-                                        color: _quantity > 1
+                                        color: product.quantity > 1
                                             ? Colors.deepOrange[700]
                                             : Colors.grey[400],
                                       )),
-                                  onPressed: _quantity > 1
+                                  onPressed: product.quantity > 1
                                       ? () {
                                           setState(() {
-                                            _quantity--;
+                                            product.quantity--;
                                           });
                                         }
                                       : null,
@@ -347,7 +345,7 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10.0),
                                 child: Text(
-                                  "$_quantity",
+                                  "${product.quantity}",
                                   style: Theme.of(context).textTheme.headline3,
                                 ),
                               ),
@@ -364,7 +362,7 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                                     )),
                                 onPressed: () {
                                   setState(() {
-                                    _quantity++;
+                                    product.quantity++;
                                   });
                                 },
                               )
@@ -389,11 +387,9 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                                 width: 2, color: Colors.blueGrey[400])),
                         child: FlatButton(
                           onPressed: () {
+                            list.add(product);
                             Navigator.pushNamed(context, '/checkout',
-                                arguments: {
-                                  'product': product,
-                                  'quantity': _quantity
-                                });
+                                arguments: list);
                           },
                           child: Text("BUY NOW"),
                         ),

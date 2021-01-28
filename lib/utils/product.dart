@@ -7,10 +7,16 @@ class Product extends ChangeNotifier {
   final String price;
   final String type;
   bool added = false;
+  int quantity = 1;
   Product({this.title, this.brand, this.price, this.type});
 
   void toggle() {
     added = !added;
+    notifyListeners();
+  }
+
+  void setQuantity(int num) {
+    quantity = num;
     notifyListeners();
   }
 }
@@ -48,6 +54,7 @@ class CartList extends ChangeNotifier {
   }
 
   void removeProduct(Product product) {
+    product.quantity = 1;
     products.remove(product);
     notifyListeners();
   }

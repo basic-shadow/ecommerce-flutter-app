@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/utils/product.dart';
-import 'package:ecommerce_app/screens/drawer.dart';
 import 'package:ecommerce_app/screens/payment.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -67,19 +66,17 @@ class _CheckoutState extends State<Checkout> {
 
   @override
   void dispose() {
+    super.dispose();
     _nameController.dispose();
     _emailController.dispose();
     _addressController.dispose();
     _phoneController.dispose();
     _controller.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, Object> prods = ModalRoute.of(context).settings.arguments;
-    final Product product = prods['product'];
-    final int _quantity = prods['quantity'];
+    final List<Product> products = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
         body: Container(
@@ -378,7 +375,7 @@ class _CheckoutState extends State<Checkout> {
               ),
             ],
           ),
-          PaymentDetails(product, _controller, _quantity),
+          PaymentDetails(products, _controller),
         ],
       ),
     ));

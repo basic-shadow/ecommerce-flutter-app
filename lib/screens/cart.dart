@@ -1,9 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ecommerce_app/utils/product.dart';
 import 'package:provider/provider.dart';
-import 'package:ecommerce_app/utils/configuration.dart';
 
 class Cart extends StatefulWidget {
   @override
@@ -12,7 +12,6 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart> {
   bool checked = false;
-  final GlobalKey<CartItemsState> _key = GlobalKey();
 
   refresh() {
     setState(() {});
@@ -26,7 +25,8 @@ class _CartState extends State<Cart> {
     String totalPrice = length > 0
         ? "\$" +
             cartList.products
-                .map((item) => double.parse(item.price.substring(1)))
+                .map((item) =>
+                    int.parse(item.price.substring(1)) * item.quantity)
                 .reduce((a, b) => a + b)
                 .toString()
         : "\$ 0";
@@ -44,13 +44,8 @@ class _CartState extends State<Cart> {
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: IconButton(
-                        icon: SvgPicture.asset(
-                          'assets/icons/menu.svg',
-                          height: 18,
-                        ),
-                        onPressed: () {
-                          context.watch<Position>().drawerTrigger(context);
-                        },
+                        icon: Icon(Icons.arrow_back),
+                        onPressed: () => Navigator.pop(context),
                       ),
                     ),
                   ),
@@ -79,9 +74,6 @@ class _CartState extends State<Cart> {
                               'assets/icons/cart.svg',
                               color: Colors.white,
                               height: 28,
-                              // color: widget.added
-                              //     ? Colors.tealAccent[700]
-                              //     : Colors.black
                             )),
                       ),
                     ),
@@ -93,18 +85,17 @@ class _CartState extends State<Cart> {
                   alignment: Alignment.centerLeft,
                   child: CheckboxListTile(
                     title: Text(
-                      "$length Items Selected",
+                      "${checked ? length : 0} Items Selected",
                       style: TextStyle(color: Colors.black, fontSize: 16),
                     ),
-                    value: checked,
+                    value: length > 0 ? checked : false,
                     onChanged: (bool value) => setState(() {
-                      checked = value;
+                      checked = length > 0 ? value : false;
                     }),
                     activeColor: Colors.black,
                   )),
               Divider(),
               Column(
-                key: _key,
                 children: cartList.products
                     .map((item) => CartItems(item, refresh))
                     .toList(),
@@ -160,23 +151,33 @@ class _CartState extends State<Cart> {
                                 child: RichText(
                                     text: TextSpan(children: [
                                   TextSpan(
-                                      text: "Discounts",
+                                      text: "Discounts ",
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold)),
-                                  TextSpan(style: TextStyle(color: Colors.red))
+                                  TextSpan(
+                                      text: ("(-10%)"),
+                                      style: TextStyle(color: Colors.red[400]))
                                 ])),
                               ),
                             ),
                             SizedBox(height: 10),
                             Divider(),
                             SizedBox(height: 15),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Total Order"),
-                                Text("Price"),
-                              ],
+                            Padding(
+                              padding: const EdgeInsets.only(right: 15.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Total Order"),
+                                  Text(
+                                    totalPrice,
+                                    style: TextStyle(
+                                        color: Colors.teal[700], fontSize: 20),
+                                  ),
+                                ],
+                              ),
                             )
                           ],
                         )),
@@ -190,7 +191,26 @@ class _CartState extends State<Cart> {
                             borderRadius: BorderRadius.circular(15),
                           ),
                           color: Colors.teal[400],
-                          onPressed: () => {},
+                          onPressed: () => checked
+                              ? Navigator.pushNamed(context, '/checkout',
+                                  arguments: cartList.products)
+                              : showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                    contentPadding: EdgeInsets.only(top: 40),
+                                    content: Text(
+                                      "Checkout needs at least 1 item to proceed",
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    actions: [
+                                      FlatButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: Text("I understand"),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                           child: Text(
                             "Checkout",
                             style: TextStyle(color: Colors.white, fontSize: 16),
@@ -218,7 +238,6 @@ class CartItems extends StatefulWidget {
 }
 
 class CartItemsState extends State<CartItems> {
-  int _quantity = 1;
   @override
   Widget build(BuildContext context) {
     CartList cartList = ModalRoute.of(context).settings.arguments;
@@ -279,9 +298,10 @@ class CartItemsState extends State<CartItems> {
                         splashColor: Colors.blueGrey[400],
                         splashRadius: 20,
                         color: Colors.grey[800],
-                        highlightColor: Colors.grey[600],
+                        highlightColor: Colors.grey[700],
                         onPressed: () {
                           if (cartList.products.length > 0) {
+                            widget.product.toggle();
                             cartList.removeProduct(widget.product);
                             widget.refresh();
                           }
@@ -309,21 +329,22 @@ class CartItemsState extends State<CartItems> {
                                 child: Icon(
                                   Icons.remove,
                                   size: 20,
-                                  color: _quantity > 1
+                                  color: widget.product.quantity > 1
                                       ? Colors.deepOrange[700]
                                       : Colors.grey[400],
                                 )),
-                            onPressed: _quantity > 1
+                            onPressed: widget.product.quantity > 1
                                 ? () {
                                     setState(() {
-                                      _quantity--;
+                                      widget.product.quantity--;
+                                      widget.refresh();
                                     });
                                   }
                                 : null,
                           ),
                         ),
                         Text(
-                          "$_quantity",
+                          "${widget.product.quantity}",
                           style: Theme.of(context).textTheme.headline3,
                         ),
                         Material(
@@ -344,7 +365,8 @@ class CartItemsState extends State<CartItems> {
                                 )),
                             onPressed: () {
                               setState(() {
-                                _quantity++;
+                                widget.product.quantity++;
+                                widget.refresh();
                               });
                             },
                           ),

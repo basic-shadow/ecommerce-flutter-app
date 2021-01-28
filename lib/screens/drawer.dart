@@ -1,4 +1,3 @@
-import 'package:ecommerce_app/utils/product.dart';
 import 'package:flutter/material.dart';
 
 class MyDrawer extends StatefulWidget {
@@ -10,10 +9,10 @@ class _MyDrawerState extends State<MyDrawer> {
   final List<String> list = ['Browse', 'My orders', 'Categories', 'My Account'];
 
   final List<Icon> icons = [
-    Icon(Icons.compare, color: Colors.black87),
-    Icon(Icons.content_paste, color: Colors.black87),
-    Icon(Icons.corporate_fare, color: Colors.black87),
-    Icon(Icons.contacts, color: Colors.black87)
+    Icon(Icons.compare, color: Colors.white60),
+    Icon(Icons.content_paste, color: Colors.white60),
+    Icon(Icons.corporate_fare, color: Colors.white60),
+    Icon(Icons.contacts, color: Colors.white60)
   ];
 
   final List<String> links = ["/", "/", "/", "/"];
@@ -46,7 +45,7 @@ class _MyDrawerState extends State<MyDrawer> {
                       child: Placeholder(
                           fallbackHeight: 150,
                           fallbackWidth: 100,
-                          color: Colors.grey[200]),
+                          color: Colors.grey[400]),
                       alignment: Alignment.topLeft,
                     ),
                   ),
@@ -55,11 +54,13 @@ class _MyDrawerState extends State<MyDrawer> {
                         vertical: 25.0, horizontal: 15.0),
                     child: Column(
                       children: [
-                        Text("Login", style: TextStyle(fontSize: 18.0)),
+                        Text("Login",
+                            style: TextStyle(
+                                fontSize: 18.0, color: Colors.grey[200])),
                         SizedBox(height: 10),
                         Text(
                           "Email",
-                          style: TextStyle(color: Colors.black54),
+                          style: TextStyle(color: Colors.grey[400]),
                         )
                       ],
                     ),
@@ -80,7 +81,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   child: FlatButton.icon(
                       icon: icons[index],
                       label: Text(list[index],
-                          style: TextStyle(color: Colors.grey[350])),
+                          style: TextStyle(color: Colors.black87)),
                       onPressed: () =>
                           Navigator.pushNamed(context, links[index])),
                 );
@@ -98,13 +99,14 @@ class _MyDrawerState extends State<MyDrawer> {
                     child: FlatButton.icon(
                       label: Text(
                         "Settings",
-                        style: TextStyle(color: Colors.grey[350]),
+                        style: TextStyle(color: Colors.black),
                       ),
                       onPressed: () {
                         print("pressed");
                       },
                       icon: Icon(
                         Icons.settings,
+                        color: Colors.white60,
                       ),
                     ),
                   ),

@@ -4,10 +4,9 @@ import 'package:square_in_app_payments/in_app_payments.dart';
 import 'package:square_in_app_payments/models.dart';
 
 class PaymentDetails extends StatefulWidget {
-  PaymentDetails(this.product, this._controller, this._quantity);
-  final Product product;
+  PaymentDetails(this.products, this._controller);
+  final List<Product> products;
   final PageController _controller;
-  final int _quantity;
 
   @override
   _PaymentDetailsState createState() => _PaymentDetailsState();
@@ -58,8 +57,18 @@ class _PaymentDetailsState extends State<PaymentDetails> {
   @override
   void initState() {
     super.initState();
-    int price = int.parse(widget.product.price.substring(1)) * widget._quantity;
-    totalPrice = widget.product.price.substring(0, 1) + price.toString();
+
+    int price = widget.products
+        .map((product) =>
+            int.parse(product.price.substring(1)) * product.quantity)
+        .reduce((a, b) => a + b);
+    totalPrice = widget.products[0].price.substring(0, 1) + price.toString();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    widget._controller.dispose();
   }
 
   @override
@@ -194,27 +203,35 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        widget.product.title,
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            widget._quantity.toString() + "  x",
-                            style: Theme.of(context).textTheme.headline3,
+                  child: Column(
+                    children: widget.products
+                        .map(
+                          (product) => Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                product.title,
+                                style: Theme.of(context).textTheme.headline4,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    product.quantity.toString() + "  x",
+                                    style:
+                                        Theme.of(context).textTheme.headline3,
+                                  ),
+                                  SizedBox(width: 15),
+                                  Text(
+                                    product.price,
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  )
+                                ],
+                              )
+                            ],
                           ),
-                          SizedBox(width: 15),
-                          Text(
-                            widget.product.price,
-                            style: Theme.of(context).textTheme.headline6,
-                          )
-                        ],
-                      )
-                    ],
+                        )
+                        .toList(),
                   ),
                 ),
                 Container(
