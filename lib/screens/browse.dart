@@ -24,11 +24,10 @@ class _BrowseState extends State<Browse> {
         )
       ],
       child: Scaffold(
-        // appBar: MyAppBar(added: added),
         body: SafeArea(
             child: Stack(
           children: [
-            // MyDrawer(),
+            MyDrawer(),
             BrowseScreen(),
           ],
         )),
@@ -43,10 +42,6 @@ class BrowseScreen extends StatefulWidget {
 }
 
 class _BrowseScreenState extends State<BrowseScreen> {
-  void callback() {
-    setState(() {});
-  }
-
   List<Product> products;
 
   final List<String> filter = [
@@ -86,7 +81,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
 
     _controller = TextEditingController();
 
-    cards = List.generate(10, (i) => MyCards(products[i], callback));
+    cards = List.generate(10, (i) => MyCards(products[i]));
   }
 
   void dispose() {
@@ -107,76 +102,77 @@ class _BrowseScreenState extends State<BrowseScreen> {
             ..scale(position.scaleFactor),
       color: Colors.white,
       child: CustomScrollView(
+        physics: BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
             automaticallyImplyLeading: false,
-            expandedHeight: 177,
+            pinned: true,
+            snap: true,
             forceElevated: true,
+            title: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: IconButton(
+                      icon: SvgPicture.asset(
+                        'assets/icons/menu.svg',
+                        height: 18,
+                      ),
+                      onPressed: () {
+                        position.drawerTrigger(context);
+                      },
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0, top: 8.0),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Stack(children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/cart',
+                                arguments: context.read<CartList>());
+                          },
+                          icon: SvgPicture.asset(
+                            'assets/icons/cart.svg',
+                            height: 28,
+                          )),
+                      productsLength > 0
+                          ? Positioned(
+                              right: 0,
+                              top: 5,
+                              child: Container(
+                                width: 18,
+                                height: 18,
+                                decoration: BoxDecoration(
+                                    color: Colors.red[800],
+                                    borderRadius: BorderRadius.circular(25)),
+                                child: Text(
+                                  "$productsLength",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 13),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            )
+                          : SizedBox.shrink(),
+                    ]),
+                  ),
+                ),
+              ],
+            ),
+            floating: true,
+            expandedHeight: 181,
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.parallax,
               background: Container(
                 child: Column(
                   children: [
-                    Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0, top: 8.0),
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: IconButton(
-                              icon: SvgPicture.asset(
-                                'assets/icons/menu.svg',
-                                height: 18,
-                              ),
-                              onPressed: () {
-                                position.drawerTrigger(context);
-                              },
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0, top: 8.0),
-                          child: Align(
-                            alignment: Alignment.topRight,
-                            child: Stack(children: [
-                              IconButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(context, '/cart',
-                                        arguments: context.read<CartList>());
-                                  },
-                                  icon: SvgPicture.asset(
-                                    'assets/icons/cart.svg',
-                                    height: 28,
-                                    // color: added.added
-                                    //     ? Colors.tealAccent[700]
-                                    //     : Colors.black
-                                  )),
-                              productsLength > 0
-                                  ? Positioned(
-                                      right: 0,
-                                      top: 5,
-                                      child: Container(
-                                        width: 20,
-                                        height: 20,
-                                        decoration: BoxDecoration(
-                                            color: Colors.red[800],
-                                            borderRadius:
-                                                BorderRadius.circular(25)),
-                                        child: Text(
-                                          "$productsLength",
-                                          style: TextStyle(color: Colors.white),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    )
-                                  : SizedBox.shrink(),
-                            ]),
-                          ),
-                        ),
-                      ],
-                    ),
                     SizedBox(
-                      height: 10,
+                      height: 70,
                     ),
                     Center(
                       child: Container(
@@ -243,7 +239,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
                         itemBuilder: (context, index) => Container(
                           decoration: BoxDecoration(
                             border: Border.all(
-                                width: 1.5, color: Colors.green[200]),
+                                width: 2, color: Colors.blueGrey[300]),
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(15.0),
                           ),
@@ -285,29 +281,11 @@ class _BrowseScreenState extends State<BrowseScreen> {
             ),
           ),
           SliverList(
-            delegate: SliverChildListDelegate([
-              Container(
-                height: 1000,
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: ListView(
-                            physics: BouncingScrollPhysics(),
-                            padding: EdgeInsets.symmetric(horizontal: 2.0),
-                            children: _value == 0
-                                ? cards
-                                : cards
-                                    .where((card) =>
-                                        card.product.type == filter[_value])
-                                    .toList()),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ]),
+            delegate: SliverChildListDelegate(_value == 0
+                ? cards
+                : cards
+                    .where((card) => card.product.type == filter[_value])
+                    .toList()),
           )
         ],
       ),
@@ -317,8 +295,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
 
 // ignore: must_be_immutable
 class MyCards extends StatefulWidget {
-  MyCards(this.product, this.callback);
-  final Function() callback;
+  MyCards(this.product);
   final Product product;
 
   @override
@@ -387,7 +364,7 @@ class _MyCardsState extends State<MyCards> {
                             widget.product.price,
                             style: TextStyle(
                               fontSize: 25.0,
-                              color: Colors.green[400],
+                              color: Colors.blueGrey[800],
                             ),
                           ),
                           AnimatedContainer(
@@ -396,7 +373,7 @@ class _MyCardsState extends State<MyCards> {
                             height: 30,
                             width: widget.product.added ? 70 : 150,
                             decoration: BoxDecoration(
-                                color: Colors.green[500],
+                                color: Colors.teal[400],
                                 borderRadius: BorderRadius.circular(20.0)),
                             child: FlatButton(
                               onPressed: () {

@@ -15,17 +15,24 @@ class _MyDrawerState extends State<MyDrawer> {
   ];
 
   final List<Icon> icons = [
-    Icon(Icons.ac_unit),
-    Icon(Icons.ac_unit_rounded),
-    Icon(Icons.backpack),
-    Icon(Icons.cake)
+    Icon(Icons.compare, color: Colors.black87),
+    Icon(Icons.content_paste, color: Colors.black87),
+    Icon(Icons.corporate_fare, color: Colors.black87),
+    Icon(Icons.contacts, color: Colors.black87)
   ];
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      color: Colors.teal[700],
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+            Colors.teal[800],
+            Colors.teal[400],
+          ])),
       child: Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -75,9 +82,8 @@ class _MyDrawerState extends State<MyDrawer> {
                   alignment: Alignment.centerLeft,
                   child: FlatButton.icon(
                       icon: icons[index],
-                      label: Text(
-                        uplist[index],
-                      ),
+                      label: Text(uplist[index],
+                          style: TextStyle(color: Colors.grey[350])),
                       onPressed: () {
                         print("tapped");
                       }),
@@ -94,12 +100,15 @@ class _MyDrawerState extends State<MyDrawer> {
                     padding:
                         const EdgeInsets.only(top: 8.0, left: 8.0, bottom: 8.0),
                     child: FlatButton.icon(
-                      label: Text("Settings"),
+                      label: Text(
+                        "Settings",
+                        style: TextStyle(color: Colors.grey[350]),
+                      ),
                       onPressed: () {
                         print("pressed");
                       },
                       icon: Icon(
-                        Icons.ac_unit_outlined,
+                        Icons.settings,
                       ),
                     ),
                   ),
@@ -110,7 +119,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                   FlatButton(
                     child: Text("Log out"),
-                    onPressed: () {},
+                    onPressed: () => Navigator.pushNamed(context, "/login"),
                   ),
                 ],
               ),

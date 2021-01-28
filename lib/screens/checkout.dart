@@ -18,10 +18,6 @@ class _CheckoutState extends State<Checkout> {
   TextEditingController _emailController;
   TextEditingController _addressController;
   TextEditingController _phoneController;
-  FocusNode focusNode1;
-  FocusNode focusNode2;
-  FocusNode focusNode3;
-  FocusNode focusNode4;
   List<DropdownMenuItem<String>> countryList;
   List<DropdownMenuItem<String>> cityList;
 

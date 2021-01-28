@@ -153,9 +153,9 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                               padding: const EdgeInsets.only(right: 35.0),
                               child: Text(product.price,
                                   style: TextStyle(
-                                    color: Colors.green,
+                                    color: Colors.blueGrey[800],
                                     fontSize: 25.0,
-                                    fontWeight: FontWeight.w400,
+                                    fontWeight: FontWeight.w500,
                                   )),
                             ),
                           ),
@@ -224,7 +224,14 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                             itemBuilder: (context, index) => Container(
                               margin: EdgeInsets.only(left: 15.0),
                               child: ChoiceChip(
-                                  selectedColor: Colors.green,
+                                  shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                        width: 2,
+                                        color: Colors.blueGrey[300],
+                                      ),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  backgroundColor: Colors.white,
+                                  selectedColor: Colors.teal[400],
                                   selected: _selectedSize == index,
                                   onSelected: (bool selected) {
                                     setState(() {
@@ -266,7 +273,14 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                             itemBuilder: (context, index) => Container(
                               margin: EdgeInsets.only(left: 15.0),
                               child: ChoiceChip(
-                                  selectedColor: Colors.green,
+                                  shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                        width: 2,
+                                        color: Colors.blueGrey[300],
+                                      ),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  backgroundColor: Colors.white,
+                                  selectedColor: Colors.teal[600],
                                   selected: _selectedColors == index,
                                   onSelected: (bool selected) {
                                     setState(() {
@@ -338,7 +352,7 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                               IconButton(
                                 icon: Container(
                                     decoration: BoxDecoration(
-                                      color: Colors.green,
+                                      color: Colors.blueGrey[700],
                                       borderRadius: BorderRadius.circular(14.0),
                                     ),
                                     child: Icon(
@@ -370,7 +384,7 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20.0),
                             border: Border.all(
-                                width: 1.5, color: Colors.greenAccent[400])),
+                                width: 2, color: Colors.blueGrey[400])),
                         child: FlatButton(
                           onPressed: () {
                             Navigator.pushNamed(context, '/checkout',
@@ -388,7 +402,7 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                         height: 30,
                         width: product.added ? 70 : 150,
                         decoration: BoxDecoration(
-                            color: Colors.greenAccent[700],
+                            color: Colors.teal[400],
                             borderRadius: BorderRadius.circular(20.0)),
                         child: FlatButton(
                           onPressed: () {

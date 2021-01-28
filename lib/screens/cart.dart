@@ -189,11 +189,11 @@ class _CartState extends State<Cart> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          color: Colors.green,
+                          color: Colors.teal[400],
                           onPressed: () {},
                           child: Text(
                             "Checkout",
-                            style: TextStyle(color: Colors.white, fontSize: 15),
+                            style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
                         ),
                       ),
