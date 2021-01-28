@@ -39,10 +39,10 @@ class _MyDrawerState extends State<MyDrawer> {
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Align(
-                      child: Image.asset(
-                        'assets/img1.jpeg',
-                        height: 100,
-                      ),
+                      child: Placeholder(
+                          fallbackHeight: 150,
+                          fallbackWidth: 100,
+                          color: Colors.grey[200]),
                       alignment: Alignment.topLeft,
                     ),
                   ),

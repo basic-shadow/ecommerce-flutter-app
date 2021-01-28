@@ -67,7 +67,7 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
     final List arguments = ModalRoute.of(context).settings.arguments;
     final Product product = arguments[0];
     final CartList cartList = arguments[1];
-    final width = MediaQuery.of(context).size.width;
+    final _width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: SafeArea(
@@ -80,7 +80,6 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                 collapseMode: CollapseMode.parallax,
                 background: Container(
                   padding: EdgeInsets.only(bottom: 10.0),
-                  width: width,
                   decoration: BoxDecoration(
                     border: Border.all(width: 2.0, color: Colors.grey[300]),
                   ),
@@ -170,10 +169,10 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                             tooltip: "Description of product",
                             icon: pressed
                                 ? SvgPicture.asset('assets/icons/arrow-up.svg',
-                                    height: width / 22)
+                                    height: _width / 22)
                                 : SvgPicture.asset(
                                     'assets/icons/arrow-down.svg',
-                                    height: width / 22),
+                                    height: _width / 22),
                             onPressed: () {
                               setState(() {
                                 pressed = !pressed;

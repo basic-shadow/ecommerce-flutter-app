@@ -28,7 +28,7 @@ class _BrowseState extends State<Browse> {
         body: SafeArea(
             child: Stack(
           children: [
-            MyDrawer(),
+            // MyDrawer(),
             BrowseScreen(),
           ],
         )),
@@ -99,202 +99,219 @@ class _BrowseScreenState extends State<BrowseScreen> {
     final position = context.watch<Position>();
     final productsLength = context.watch<CartList>().products.length;
 
-    NestedScrollView(
-      floatHeaderSlivers: true,
-      headerSliverBuilder: (BuildContext context, bool scrolled) {
-        return [
-          SliverAppBar(
-            pinned: true,
-            floating: true,
-            forceElevated: scrolled,
-            bottom: 
-          )
-        ]
-      },
-    )
-
     return AnimatedContainer(
-        curve: Curves.easeInOutCirc,
-        duration: Duration(milliseconds: 300),
-        transform:
-            Matrix4.translationValues(position.xOffset, position.yOffset, 0)
-              ..scale(position.scaleFactor),
-        color: Colors.white,
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0, top: 8.0),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: IconButton(
-                      icon: SvgPicture.asset(
-                        'assets/icons/menu.svg',
-                        height: 18,
-                      ),
-                      onPressed: () {
-                        position.drawerTrigger(context);
-                      },
+      curve: Curves.easeInOutCirc,
+      duration: Duration(milliseconds: 300),
+      transform:
+          Matrix4.translationValues(position.xOffset, position.yOffset, 0)
+            ..scale(position.scaleFactor),
+      color: Colors.white,
+      child: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            automaticallyImplyLeading: false,
+            expandedHeight: 177,
+            forceElevated: true,
+            flexibleSpace: FlexibleSpaceBar(
+              collapseMode: CollapseMode.parallax,
+              background: Container(
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: IconButton(
+                              icon: SvgPicture.asset(
+                                'assets/icons/menu.svg',
+                                height: 18,
+                              ),
+                              onPressed: () {
+                                position.drawerTrigger(context);
+                              },
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0, top: 8.0),
+                          child: Align(
+                            alignment: Alignment.topRight,
+                            child: Stack(children: [
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, '/cart',
+                                        arguments: context.read<CartList>());
+                                  },
+                                  icon: SvgPicture.asset(
+                                    'assets/icons/cart.svg',
+                                    height: 28,
+                                    // color: added.added
+                                    //     ? Colors.tealAccent[700]
+                                    //     : Colors.black
+                                  )),
+                              productsLength > 0
+                                  ? Positioned(
+                                      right: 0,
+                                      top: 5,
+                                      child: Container(
+                                        width: 20,
+                                        height: 20,
+                                        decoration: BoxDecoration(
+                                            color: Colors.red[800],
+                                            borderRadius:
+                                                BorderRadius.circular(25)),
+                                        child: Text(
+                                          "$productsLength",
+                                          style: TextStyle(color: Colors.white),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    )
+                                  : SizedBox.shrink(),
+                            ]),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0, top: 8.0),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: Stack(children: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/cart',
-                                arguments: context.read<CartList>());
-                          },
-                          icon: SvgPicture.asset(
-                            'assets/icons/cart.svg',
-                            height: 28,
-                            // color: added.added
-                            //     ? Colors.tealAccent[700]
-                            //     : Colors.black
-                          )),
-                      productsLength > 0
-                          ? Positioned(
-                              right: 0,
-                              top: 5,
-                              child: Container(
-                                width: 20,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                    color: Colors.red[800],
-                                    borderRadius: BorderRadius.circular(25)),
-                                child: Text(
-                                  "$productsLength",
-                                  style: TextStyle(color: Colors.white),
-                                  textAlign: TextAlign.center,
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Center(
+                      child: Container(
+                          width: 350,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5.0),
+                              border: Border.all(
+                                  width: 1.0, color: Colors.black26)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  style: Theme.of(context).textTheme.headline3,
+                                  controller: _controller,
+                                  maxLines: 1,
+                                  onSubmitted: (String val) {
+                                    print(val);
+                                  },
+                                  decoration: InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 2.0,
+                                          color: Colors.greenAccent),
+                                    ),
+                                    hintText: "Search",
+                                    border: InputBorder.none,
+                                    contentPadding: EdgeInsets.all(12.0),
+                                  ),
                                 ),
                               ),
-                            )
-                          : SizedBox.shrink(),
-                    ]),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Center(
-              child: Container(
-                  width: 350,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      border: Border.all(width: 1.0, color: Colors.black26)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          style: Theme.of(context).textTheme.headline3,
-                          controller: _controller,
-                          maxLines: 1,
-                          onSubmitted: (String val) {
-                            print(val);
-                          },
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  width: 2.0, color: Colors.greenAccent),
-                            ),
-                            hintText: "Search",
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(12.0),
+                              IconButton(
+                                color: Colors.black,
+                                icon: Icon(Icons.search, size: 20),
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                            title: Text("Pressed Search"),
+                                            content: Text(
+                                                "You searched ${_controller.text}"),
+                                            actions: [
+                                              FlatButton(
+                                                  child: Text("Continue"),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  }),
+                                            ]);
+                                      });
+                                },
+                              ),
+                            ],
+                          )),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      height: 30,
+                      child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: filter.length,
+                        itemBuilder: (context, index) => Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 1.5, color: Colors.green[200]),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          margin: EdgeInsets.only(left: 10.0),
+                          width: 140,
+                          child: ChoiceChip(
+                            backgroundColor: Colors.white,
+                            selectedColor: Colors.teal[600],
+                            labelStyle: _value == index
+                                ? Theme.of(context).textTheme.headline5
+                                : Theme.of(context).textTheme.headline3,
+                            label: Container(
+                                child: Transform.translate(
+                                    offset: Offset(0, -3),
+                                    child: Center(child: Text(filter[index])))),
+                            selected: _value == index,
+                            onSelected: (bool selected) {
+                              setState(() {
+                                _value = selected ? index : _value;
+                              });
+                            },
                           ),
                         ),
                       ),
-                      IconButton(
-                        color: Colors.black,
-                        icon: Icon(Icons.search, size: 20),
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                    title: Text("Pressed Search"),
-                                    content: Text(
-                                        "You searched ${_controller.text}"),
-                                    actions: [
-                                      FlatButton(
-                                          child: Text("Continue"),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          }),
-                                    ]);
-                              });
-                        },
-                      ),
-                    ],
-                  )),
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-              height: 30,
-              child: ListView.builder(
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                itemCount: filter.length,
-                itemBuilder: (context, index) => Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1.5, color: Colors.green[200]),
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  margin: EdgeInsets.only(left: 10.0),
-                  width: 140,
-                  child: ChoiceChip(
-                    backgroundColor: Colors.white,
-                    selectedColor: Colors.teal[600],
-                    labelStyle: _value == index
-                        ? Theme.of(context).textTheme.headline5
-                        : Theme.of(context).textTheme.headline3,
-                    label: Container(
-                        child: Transform.translate(
-                            offset: Offset(0, -3),
-                            child: Center(child: Text(filter[index])))),
-                    selected: _value == index,
-                    onSelected: (bool selected) {
-                      setState(() {
-                        _value = selected ? index : _value;
-                      });
-                    },
-                  ),
+                    ),
+                    Container(
+                      height: 0.8,
+                      child: Container(height: 0.8, color: Colors.grey[300]),
+                      decoration: BoxDecoration(boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset(0, 0.8),
+                        )
+                      ]),
+                    ),
+                  ],
                 ),
               ),
             ),
-            Container(
-              height: 0.8,
-              child: Container(height: 0.8, color: Colors.grey[300]),
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0, 0.8),
-                )
-              ]),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: ListView(
-                    physics: BouncingScrollPhysics(),
-                    padding: EdgeInsets.symmetric(horizontal: 2.0),
-                    children: _value == 0
-                        ? cards
-                        : cards
-                            .where(
-                                (card) => card.product.type == filter[_value])
-                            .toList()),
-              ),
-            ),
-          ],
-        ));
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              Container(
+                height: 1000,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: ListView(
+                            physics: BouncingScrollPhysics(),
+                            padding: EdgeInsets.symmetric(horizontal: 2.0),
+                            children: _value == 0
+                                ? cards
+                                : cards
+                                    .where((card) =>
+                                        card.product.type == filter[_value])
+                                    .toList()),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ]),
+          )
+        ],
+      ),
+    );
   }
 }
 
