@@ -59,3 +59,25 @@ class CartList extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+class OrderList extends ChangeNotifier {
+  OrderList();
+  List<Product> orderProducts = List();
+
+  void addProduct(Product product) {
+    orderProducts.add(product);
+  }
+
+  void removeProduct(Product product) {
+    product.quantity = 1;
+    orderProducts.remove(product);
+  }
+}
+
+class PopWithResults {
+  final String toPage;
+
+  final List<Product> orderResults;
+
+  PopWithResults({@required this.toPage, this.orderResults});
+}

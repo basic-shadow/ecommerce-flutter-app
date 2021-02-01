@@ -22,6 +22,7 @@ class _CartState extends State<Cart> {
     String route = ModalRoute.of(context).settings.name;
     CartList cartList = ModalRoute.of(context).settings.arguments;
     int length = cartList.products.length;
+
     String totalPrice = length > 0
         ? "\$" +
             cartList.products

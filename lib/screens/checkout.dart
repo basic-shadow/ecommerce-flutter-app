@@ -375,7 +375,7 @@ class _CheckoutState extends State<Checkout> {
               ),
             ],
           ),
-          PaymentDetails(products, _controller),
+          PaymentDetails(_controller, products),
         ],
       ),
     ));

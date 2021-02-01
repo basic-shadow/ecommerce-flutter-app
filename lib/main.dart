@@ -4,6 +4,8 @@ import './screens/login.dart';
 import './screens/item.dart';
 import './screens/checkout.dart';
 import './screens/cart.dart';
+import './screens/orders.dart';
+import './screens/account.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -37,6 +39,8 @@ void main() {
         )),
     initialRoute: '/login',
     routes: {
+      '/orders': (context) => Orders(),
+      '/account': (context) => Account(),
       '/login': (context) => Login(),
       '/': (context) => Browse(),
       '/item': (context) => Item(),

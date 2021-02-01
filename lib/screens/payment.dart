@@ -4,7 +4,7 @@ import 'package:square_in_app_payments/in_app_payments.dart';
 import 'package:square_in_app_payments/models.dart';
 
 class PaymentDetails extends StatefulWidget {
-  PaymentDetails(this.products, this._controller);
+  PaymentDetails(this._controller, this.products);
   final List<Product> products;
   final PageController _controller;
 
@@ -14,7 +14,7 @@ class PaymentDetails extends StatefulWidget {
 
 class _PaymentDetailsState extends State<PaymentDetails> {
   String totalPrice;
-  bool completed = false;
+  bool completed = true;
 
   void _pay() {
     InAppPayments.setSquareApplicationId(
@@ -26,7 +26,6 @@ class _PaymentDetailsState extends State<PaymentDetails> {
   }
 
   void _cardEntryCancel() {
-    // Cancel
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text("Wrong Card Details"),
       duration: Duration(milliseconds: 1200),
@@ -34,7 +33,6 @@ class _PaymentDetailsState extends State<PaymentDetails> {
   }
 
   void _cardEntryComplete() {
-    // Success
     setState(() => completed = true);
   }
 
@@ -66,12 +64,6 @@ class _PaymentDetailsState extends State<PaymentDetails> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    widget._controller.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       child: completed
@@ -86,7 +78,9 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                         style: TextStyle(color: Colors.blue[700], fontSize: 20),
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/');
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, '/', ModalRoute.withName('/'),
+                            arguments: {'orderResults': widget.products});
                       },
                     )
                   ]),
