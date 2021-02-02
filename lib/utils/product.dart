@@ -6,9 +6,21 @@ class Product extends ChangeNotifier {
   final String brand;
   final String price;
   final String type;
+  String shipPrice = "\$0";
+  int shipmentChoice = 0;
   bool added = false;
   int quantity = 1;
   Product({this.title, this.brand, this.price, this.type});
+
+  void setShipment(String shipment) {
+    shipPrice = shipment;
+    notifyListeners();
+  }
+
+  void setChoiceShipment(int i) {
+    shipmentChoice = i;
+    notifyListeners();
+  }
 
   void toggle() {
     added = !added;

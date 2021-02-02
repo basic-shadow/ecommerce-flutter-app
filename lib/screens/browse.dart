@@ -90,8 +90,8 @@ class _BrowseScreenState extends State<BrowseScreen> {
   }
 
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -243,9 +243,8 @@ class _BrowseScreenState extends State<BrowseScreen> {
                                               actions: [
                                                 FlatButton(
                                                     child: Text("Continue"),
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    }),
+                                                    onPressed: () =>
+                                                        Navigator.pop(context)),
                                               ]);
                                         });
                                   },

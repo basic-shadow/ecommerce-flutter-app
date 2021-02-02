@@ -43,27 +43,29 @@ class _MyDrawerState extends State<MyDrawer> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Align(
-                    child: Placeholder(
-                        fallbackHeight: 150,
-                        fallbackWidth: 100,
-                        color: Colors.grey[400]),
-                    alignment: Alignment.topLeft,
-                  ),
-                ),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15.0, horizontal: 10.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Image.asset(
+                        "assets/img1.jpg",
+                        width: 100,
+                        fit: BoxFit.cover,
+                      ),
+                    )),
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      vertical: 25.0, horizontal: 15.0),
+                      vertical: 25.0, horizontal: 5.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Login",
+                      Text("basic-shadow",
                           style: TextStyle(
-                              fontSize: 18.0, color: Colors.grey[200])),
-                      SizedBox(height: 10),
+                              fontSize: 15.0, color: Colors.grey[200])),
+                      SizedBox(height: 5),
                       Text(
-                        "Email",
-                        style: TextStyle(color: Colors.grey[400]),
+                        "islambek.mamet.00@gmail.com",
+                        style: TextStyle(color: Colors.black38, fontSize: 10),
                       )
                     ],
                   ),
@@ -110,7 +112,8 @@ class _MyDrawerState extends State<MyDrawer> {
                         style: TextStyle(color: Colors.black54),
                       ),
                       onPressed: () {
-                        print("pressed");
+                        Navigator.pushNamed(context, '/settings');
+                        widget.position.drawerTrigger(context);
                       },
                       icon: Icon(
                         Icons.settings,
@@ -126,7 +129,9 @@ class _MyDrawerState extends State<MyDrawer> {
                   FlatButton(
                     child: Text("Log out",
                         style: TextStyle(color: Colors.black87)),
-                    onPressed: () => Navigator.pushNamed(context, "/login"),
+                    onPressed: () => Navigator.of(context)
+                        .pushNamedAndRemoveUntil(
+                            '/login', (Route<dynamic> route) => false),
                   ),
                 ],
               ),

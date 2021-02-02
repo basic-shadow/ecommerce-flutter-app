@@ -14,7 +14,7 @@ class PaymentDetails extends StatefulWidget {
 
 class _PaymentDetailsState extends State<PaymentDetails> {
   String totalPrice;
-  bool completed = true;
+  bool completed = false;
 
   void _pay() {
     InAppPayments.setSquareApplicationId(
@@ -58,8 +58,10 @@ class _PaymentDetailsState extends State<PaymentDetails> {
 
     int price = widget.products
         .map((product) =>
-            int.parse(product.price.substring(1)) * product.quantity)
+            int.parse(product.price.substring(1)) * product.quantity +
+            int.parse(product.shipPrice.substring(1)))
         .reduce((a, b) => a + b);
+
     totalPrice = widget.products[0].price.substring(0, 1) + price.toString();
   }
 
@@ -185,15 +187,9 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                   ),
                 ),
                 Container(
-                  height: 0.8,
+                  height: 1,
+                  color: Colors.grey[400],
                   margin: EdgeInsets.all(13.0),
-                  child: Container(height: 0.8, color: Colors.grey[300]),
-                  decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey[400],
-                      offset: Offset(0, 0.8),
-                    )
-                  ]),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
@@ -203,23 +199,43 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                           (product) => Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                product.title,
-                                style: Theme.of(context).textTheme.headline4,
-                              ),
-                              Row(
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    product.quantity.toString() + "  x",
-                                    style:
-                                        Theme.of(context).textTheme.headline3,
+                                    product.title,
+                                    style: TextStyle(fontSize: 18.0),
                                   ),
-                                  SizedBox(width: 15),
+                                  SizedBox(height: 4.0),
                                   Text(
-                                    product.price,
-                                    style:
-                                        Theme.of(context).textTheme.headline6,
+                                    "Shipment",
+                                    style: TextStyle(fontSize: 14.0),
                                   )
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        product.quantity.toString() + "  x",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline3,
+                                      ),
+                                      SizedBox(width: 15),
+                                      Text(
+                                        product.price,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6,
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(height: 4.0),
+                                  Text(product.shipPrice,
+                                      style: TextStyle(fontSize: 17.0)),
                                 ],
                               )
                             ],
@@ -228,17 +244,26 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                         .toList(),
                   ),
                 ),
-                Container(
-                  height: 0.8,
-                  margin: EdgeInsets.all(13.0),
-                  child: Container(height: 0.8, color: Colors.grey[300]),
-                  decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey[400],
-                      offset: Offset(0, 0.8),
-                    )
-                  ]),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 15.0, vertical: 8.0),
+                  child: RichText(
+                      text: TextSpan(children: [
+                    TextSpan(
+                        text: "Discounts ",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.0)),
+                    TextSpan(
+                        text: ("(-0%)"),
+                        style: TextStyle(color: Colors.red[400]))
+                  ])),
                 ),
+                Container(
+                    height: 1,
+                    margin: EdgeInsets.all(13.0),
+                    color: Colors.grey[300]),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 15.0, vertical: 5.0),

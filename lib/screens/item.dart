@@ -14,15 +14,16 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
   int _selectedSize = 1;
   int _selectedColors = 1;
   bool isFav = false;
+  int marked = 0;
 
   Animation<Color> _animFavcolor;
   Animation<double> _animFavsize;
   AnimationController _animController;
 
-  GlobalKey widgetKey = GlobalKey();
   String descr =
       "hidden hiddenhiddenhiddenhiddenhiddenhiddenhiddenhiddenhidden";
   AnimationController _animOffsetController;
+  void callback(int selected) => setState(() => marked = selected);
 
   @override
   void initState() {
@@ -218,7 +219,7 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                         Expanded(
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            physics: ClampingScrollPhysics(),
+                            physics: BouncingScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: sizes.length,
                             itemBuilder: (context, index) => Container(
@@ -234,10 +235,8 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                                   selectedColor: Colors.teal[400],
                                   selected: _selectedSize == index,
                                   onSelected: (bool selected) {
-                                    setState(() {
-                                      _selectedSize =
-                                          selected ? index : _selectedSize;
-                                    });
+                                    setState(() => _selectedSize =
+                                        selected ? index : _selectedSize);
                                   },
                                   label: Container(
                                     width: 35,
@@ -267,7 +266,7 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                         Expanded(
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            physics: ClampingScrollPhysics(),
+                            physics: BouncingScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: colors.length,
                             itemBuilder: (context, index) => Container(
@@ -371,7 +370,19 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                         ],
                       ),
                     )),
-                Divider(),
+                Divider(thickness: 2.0, color: Colors.grey[300]),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Shipping("Free Shipping", "Mar 10", true, callback, 0,
+                        marked, product),
+                    Divider(color: Colors.grey[300]),
+                    Shipping("Shipment \$15", "Feb 15", false, callback, 1,
+                        marked, product),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Divider(thickness: 2.0, color: Colors.grey[300]),
                 SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.only(top: 5.0, bottom: 20.0),
@@ -422,6 +433,72 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                 ),
               ]),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Shipping extends StatefulWidget {
+  final String shipForm;
+  final String date;
+  final bool form;
+  final void Function(int) callback;
+  final int index;
+  final Product product;
+  int marked;
+  Shipping(this.shipForm, this.date, this.form, this.callback, this.index,
+      this.marked, this.product);
+
+  @override
+  _ShippingState createState() => _ShippingState();
+}
+
+class _ShippingState extends State<Shipping> {
+  @override
+  Widget build(BuildContext context) {
+    final String str = widget.form ? "Standard" : "Premium";
+
+    return InkWell(
+      onTap: () {
+        widget.callback(widget.index);
+        widget.index == 1
+            ? widget.product.setShipment("\$15")
+            : widget.product.setShipment("\$0");
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.only(top: 15.0, bottom: 5.0),
+        padding: EdgeInsets.symmetric(horizontal: 15.0),
+        child: Stack(
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(widget.shipForm,
+                    style: TextStyle(fontSize: 18.0, color: Colors.black)),
+                SizedBox(height: 6.0),
+                Flexible(
+                  child: Text("Estimated delivery date on ${widget.date}",
+                      style: TextStyle(color: Colors.black54, fontSize: 12.0)),
+                ),
+                SizedBox(height: 15.0),
+                Text(
+                  "${str} Shipment",
+                  style: TextStyle(color: Colors.black87),
+                ),
+                Text(
+                  "Tracking available",
+                  style: TextStyle(color: Colors.black87),
+                ),
+              ],
+            ),
+            widget.marked == widget.index
+                ? Positioned(
+                    top: 25, right: 25, child: Icon(Icons.check_outlined))
+                : SizedBox.shrink(),
           ],
         ),
       ),

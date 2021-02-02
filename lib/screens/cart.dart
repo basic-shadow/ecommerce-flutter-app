@@ -138,15 +138,6 @@ class _CartState extends State<Cart> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 5.0, horizontal: 12.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [Text("Shipment"), Text("price2")],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 5.0, horizontal: 12.0),
                               child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: RichText(
@@ -157,7 +148,7 @@ class _CartState extends State<Cart> {
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold)),
                                   TextSpan(
-                                      text: ("(-10%)"),
+                                      text: ("(-0%)"),
                                       style: TextStyle(color: Colors.red[400]))
                                 ])),
                               ),

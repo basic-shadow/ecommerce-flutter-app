@@ -9,8 +9,6 @@ class Account extends StatefulWidget {
 class _AccountState extends State<Account> {
   @override
   Widget build(BuildContext context) {
-    final double _height = MediaQuery.of(context).size.height;
-    final double _width = MediaQuery.of(context).size.width;
     final arguments = ModalRoute.of(context).settings.arguments as Map;
     final OrderList orderList = arguments['orderList'];
 
@@ -34,7 +32,7 @@ class _AccountState extends State<Account> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    height: 200,
+                    height: 190,
                     child: Stack(
                       children: [
                         Positioned(
@@ -44,7 +42,7 @@ class _AccountState extends State<Account> {
                             height: 35,
                             width: 35,
                             decoration: BoxDecoration(
-                              color: Colors.white24,
+                              color: Colors.grey[300],
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             child: Material(
@@ -60,35 +58,40 @@ class _AccountState extends State<Account> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 45.0),
+                          padding: const EdgeInsets.only(top: 25.0),
                           child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Spacer(),
                                 Spacer(),
-                                Container(
-                                  width: 150,
-                                  height: 90,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20.0),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(100.0),
+                                  child: Image.asset(
+                                    "assets/img1.jpg",
+                                    fit: BoxFit.cover,
+                                    height: 100,
+                                    width: 100,
                                   ),
-                                  child: Placeholder(color: Colors.grey[400]),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 15.0, vertical: 8.0),
                                   child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text("Login",
-                                          style:
-                                              TextStyle(color: Colors.black)),
+                                      Text("basic-shadow",
+                                          style: TextStyle(
+                                              color: Colors.grey[200],
+                                              fontSize: 15)),
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(top: 10.0),
                                         child: Text(
-                                          "Email",
+                                          "islambek.mamet.00@gmail.com",
                                           style: TextStyle(
-                                              color: Colors.grey[400]),
+                                              color: Colors.black38,
+                                              fontSize: 10),
                                         ),
                                       ),
                                     ],
@@ -103,18 +106,23 @@ class _AccountState extends State<Account> {
                             bottom: 20,
                             right: 30,
                             child: RichText(
+                                textAlign: TextAlign.center,
                                 text: TextSpan(children: [
-                              TextSpan(
-                                  text: "Balance:   ",
-                                  style: TextStyle(
-                                      color: Colors.black87, fontSize: 17)),
-                              TextSpan(
-                                  text: "\$100",
-                                  style: TextStyle(
-                                      color: Colors.green[100],
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold)),
-                            ]))),
+                                  TextSpan(
+                                      text: "Balance:",
+                                      style: TextStyle(
+                                          color: Colors.black87, fontSize: 17)),
+                                  WidgetSpan(
+                                      child: SizedBox(
+                                    width: 25,
+                                  )),
+                                  TextSpan(
+                                      text: "\$100",
+                                      style: TextStyle(
+                                          color: Colors.grey[300],
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold)),
+                                ]))),
                         Positioned(
                           top: 10,
                           right: 15,
@@ -122,7 +130,7 @@ class _AccountState extends State<Account> {
                             height: 35,
                             width: 35,
                             decoration: BoxDecoration(
-                              color: Colors.white24,
+                              color: Colors.grey[300],
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             child: Material(
@@ -132,7 +140,9 @@ class _AccountState extends State<Account> {
                                 splashColor: Colors.teal[400],
                                 icon: Icon(Icons.settings,
                                     color: Colors.blueGrey[700]),
-                                onPressed: () => Navigator.pop(context),
+                                onPressed: () => Navigator.of(context)
+                                    .pushNamedAndRemoveUntil('/login',
+                                        (Route<dynamic> route) => false),
                               ),
                             ),
                           ),

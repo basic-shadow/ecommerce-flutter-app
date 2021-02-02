@@ -6,6 +6,7 @@ import './screens/checkout.dart';
 import './screens/cart.dart';
 import './screens/orders.dart';
 import './screens/account.dart';
+import './screens/settings.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -42,6 +43,7 @@ void main() {
       '/orders': (context) => Orders(),
       '/account': (context) => Account(),
       '/login': (context) => Login(),
+      '/settings': (context) => Settings(),
       '/': (context) => Browse(),
       '/item': (context) => Item(),
       '/checkout': (context) => Checkout(),
