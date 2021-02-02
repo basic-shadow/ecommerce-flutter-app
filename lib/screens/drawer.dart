@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:ecommerce_app/utils/product.dart';
 
 class MyDrawer extends StatefulWidget {
-  final OrderList;
-  MyDrawer(this.OrderList);
+  final OrderList orderList;
+  final Position position;
+  MyDrawer(this.orderList, this.position);
   @override
   _MyDrawerState createState() => _MyDrawerState();
 }
@@ -83,8 +85,12 @@ class _MyDrawerState extends State<MyDrawer> {
                     icon: icons[index],
                     label: Text(list[index],
                         style: TextStyle(color: Colors.black54)),
-                    onPressed: () => Navigator.pushNamed(context, links[index],
-                        arguments: {'orderList': widget.OrderList})),
+                    onPressed: () {
+                      Navigator.pushNamed(context, links[index],
+                          arguments: {'orderList': widget.orderList});
+
+                      widget.position.drawerTrigger(context);
+                    }),
               );
             },
             itemCount: list.length,

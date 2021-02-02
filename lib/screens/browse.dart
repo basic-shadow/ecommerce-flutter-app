@@ -13,12 +13,13 @@ class Browse extends StatefulWidget {
 
 class _BrowseState extends State<Browse> {
   final OrderList orderList = OrderList();
+  final Position position = Position(xOffset: 0, yOffset: 0, scaleFactor: 1);
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<Position>(
-          create: (_) => Position(xOffset: 0, yOffset: 0, scaleFactor: 1),
+        ChangeNotifierProvider<Position>.value(
+          value: position,
         ),
         ChangeNotifierProvider<CartList>(
           create: (_) => CartList(),
@@ -31,7 +32,7 @@ class _BrowseState extends State<Browse> {
         body: SafeArea(
             child: Stack(
           children: [
-            MyDrawer(orderList),
+            MyDrawer(orderList, position),
             BrowseScreen(),
           ],
         )),

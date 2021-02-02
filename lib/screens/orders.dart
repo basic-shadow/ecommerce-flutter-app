@@ -97,9 +97,9 @@ class _OrdersState extends State<Orders> {
                                 color: Colors.white,
                                 boxShadow: [
                                   BoxShadow(
-                                      color: Colors.teal,
-                                      blurRadius: 5,
-                                      spreadRadius: 1)
+                                    color: Colors.teal,
+                                    blurRadius: 5,
+                                  )
                                 ],
                                 borderRadius: BorderRadius.circular(50.0)),
                             child: Text(
