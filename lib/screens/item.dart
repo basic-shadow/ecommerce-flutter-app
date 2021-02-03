@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/utils/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ecommerce_app/utils/configuration.dart';
 
 class Item extends StatefulWidget {
   @override
@@ -9,8 +10,6 @@ class Item extends StatefulWidget {
 
 class _ItemState extends State<Item> with TickerProviderStateMixin {
   bool pressed = false;
-  final List<String> sizes = ["XS", "S", "M", "L", "XL", "XXL"];
-  final List<String> colors = ["BLACK", "WHITE", "BLUE", "GREEN", "RED"];
   int _selectedSize = 1;
   int _selectedColors = 1;
   bool isFav = false;
@@ -20,8 +19,6 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
   Animation<double> _animFavsize;
   AnimationController _animController;
 
-  String descr =
-      "hidden hiddenhiddenhiddenhiddenhiddenhiddenhiddenhiddenhidden";
   AnimationController _animOffsetController;
   void callback(int selected) => setState(() => marked = selected);
 
@@ -235,8 +232,11 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                                   selectedColor: Colors.teal[400],
                                   selected: _selectedSize == index,
                                   onSelected: (bool selected) {
-                                    setState(() => _selectedSize =
-                                        selected ? index : _selectedSize);
+                                    setState(() {
+                                      product.setSize(sizes[index]);
+                                      _selectedSize =
+                                          selected ? index : _selectedSize;
+                                    });
                                   },
                                   label: Container(
                                     width: 35,
@@ -283,6 +283,7 @@ class _ItemState extends State<Item> with TickerProviderStateMixin {
                                   selected: _selectedColors == index,
                                   onSelected: (bool selected) {
                                     setState(() {
+                                      product.setColor(colors[index]);
                                       _selectedColors =
                                           selected ? index : _selectedColors;
                                     });

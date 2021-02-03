@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -219,7 +218,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                       padding: EdgeInsets.only(top: 25),
                       child: FlatButton(
                         minWidth: _width * 0.5,
-                        onPressed: () => Navigator.pushNamed(context, '/'),
+                        onPressed: () =>
+                            Navigator.pushNamed(context, '/signup'),
                         color: Colors.blueGrey[600],
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),

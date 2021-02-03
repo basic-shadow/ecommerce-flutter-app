@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import './screens/browse.dart';
-import './screens/login.dart';
-import './screens/item.dart';
-import './screens/checkout.dart';
-import './screens/cart.dart';
-import './screens/orders.dart';
-import './screens/account.dart';
-import './screens/settings.dart';
+import 'package:ecommerce_app/screens/library.dart';
 
 void main() {
   runApp(MaterialApp(
-    title: "AppName",
+    title: "Trademark",
     theme: ThemeData(
         primaryColor: Colors.grey[100],
         fontFamily: 'Poppins',
@@ -43,6 +36,7 @@ void main() {
       '/orders': (context) => Orders(),
       '/account': (context) => Account(),
       '/login': (context) => Login(),
+      '/signup': (context) => SignUp(),
       '/settings': (context) => Settings(),
       '/': (context) => Browse(),
       '/item': (context) => Item(),

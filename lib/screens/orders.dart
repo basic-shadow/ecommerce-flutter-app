@@ -11,7 +11,6 @@ class _OrdersState extends State<Orders> {
   Widget build(BuildContext context) {
     final arguments = ModalRoute.of(context).settings.arguments as Map;
     final OrderList orderList = arguments['orderList'];
-    print(orderList.orderProducts.length);
     final double _width = MediaQuery.of(context).size.width;
 
     return Scaffold(

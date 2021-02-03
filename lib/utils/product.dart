@@ -8,12 +8,24 @@ class Product extends ChangeNotifier {
   final String type;
   String shipPrice = "\$0";
   int shipmentChoice = 0;
+  String size = "S";
+  String color = "Black";
   bool added = false;
   int quantity = 1;
   Product({this.title, this.brand, this.price, this.type});
 
   void setShipment(String shipment) {
     shipPrice = shipment;
+    notifyListeners();
+  }
+
+  void setSize(String itemSize) {
+    size = itemSize;
+    notifyListeners();
+  }
+
+  void setColor(String itemColor) {
+    color = itemColor;
     notifyListeners();
   }
 

@@ -38,7 +38,6 @@ class _PaymentDetailsState extends State<PaymentDetails> {
 
   void _cardNonceRequestSuccess(CardDetails result) {
     // Use this nonce from your backend to pay via Square API
-    print(result.nonce);
 
     final bool _invalidZipCode = false;
 

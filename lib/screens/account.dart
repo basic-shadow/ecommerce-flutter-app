@@ -180,7 +180,7 @@ class _AccountState extends State<Account> {
                                       height: 35,
                                       width: 90,
                                       decoration: BoxDecoration(
-                                          color: Colors.grey[100],
+                                          color: Colors.grey[200],
                                           borderRadius:
                                               BorderRadius.circular(9)),
                                       child: Center(
@@ -323,23 +323,27 @@ class _AccountState extends State<Account> {
 }
 
 Widget iconTextBtn(String text, IconData icon) {
-  return InkWell(
-    onTap: () => print(text),
-    child: Container(
-        padding: EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            Icon(icon, color: Colors.greenAccent),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                text,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12.5),
+  return Material(
+    type: MaterialType.transparency,
+    child: InkWell(
+      splashColor: Colors.blue[300],
+      onTap: () {},
+      child: Container(
+          padding: EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              Icon(icon, color: Colors.greenAccent),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 12.5),
+                ),
               ),
-            ),
-          ],
-        )),
+            ],
+          )),
+    ),
   );
 }
 
@@ -356,57 +360,74 @@ class Coupons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        margin: EdgeInsets.only(top: 10.0, left: 10.0, right: 8.0),
-        width: 190,
-        decoration: BoxDecoration(
-          color: _color,
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              top: 20,
-              left: 12,
-              width: 190 / 1.8,
-              child: RichText(
-                  text: TextSpan(children: [
-                TextSpan(text: _text, style: TextStyle(color: Colors.black87)),
-                textspan
-                    ? TextSpan(
-                        text: "\$5",
-                        style: TextStyle(color: Colors.pink[400], fontSize: 25))
-                    : TextSpan(),
-              ])),
+    return Material(
+      type: MaterialType.transparency,
+      child: InkWell(
+        onTap: () {},
+        splashColor: Colors.lightBlue,
+        child: Container(
+            margin: EdgeInsets.only(
+                top: 10.0, left: 10.0, right: 8.0, bottom: 10.0),
+            width: 190,
+            decoration: BoxDecoration(
+              color: _color,
+              borderRadius: BorderRadius.circular(10.0),
             ),
-            Positioned(
-              top: 27,
-              right: 22,
-              child: Icon(_icon, size: 40, color: Colors.blue[800]),
-            )
-          ],
-        ));
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 20,
+                  left: 12,
+                  width: 190 / 1.8,
+                  child: RichText(
+                      text: TextSpan(children: [
+                    TextSpan(
+                        text: _text, style: TextStyle(color: Colors.black87)),
+                    textspan
+                        ? TextSpan(
+                            text: "\$5",
+                            style: TextStyle(
+                                color: Colors.pink[400], fontSize: 25))
+                        : TextSpan(),
+                  ])),
+                ),
+                Positioned(
+                  top: 27,
+                  right: 22,
+                  child: Icon(_icon, size: 40, color: Colors.blue[800]),
+                )
+              ],
+            )),
+      ),
+    );
   }
 }
 
 Widget service(String text, Icon icon) {
-  return Container(
-      // height: 50,
-      // width: 160,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.blueGrey[200], width: 2.5),
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(padding: EdgeInsets.only(left: 15.0), child: icon),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Text(text),
-            ),
+  return Material(
+    type: MaterialType.transparency,
+    child: InkWell(
+      onTap: () {},
+      splashColor: Colors.deepOrange[300],
+      child: Container(
+          // height: 50,
+          // width: 160,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.blueGrey[200], width: 2.5),
+            borderRadius: BorderRadius.circular(20.0),
           ),
-        ],
-      ));
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(padding: EdgeInsets.only(left: 15.0), child: icon),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(text),
+                ),
+              ),
+            ],
+          )),
+    ),
+  );
 }

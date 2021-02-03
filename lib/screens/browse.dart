@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/screens/drawer.dart';
-import 'dart:math';
 import 'package:ecommerce_app/utils/product.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -47,45 +46,13 @@ class BrowseScreen extends StatefulWidget {
 }
 
 class _BrowseScreenState extends State<BrowseScreen> {
-  List<Product> products;
-
-  final List<String> filter = [
-    'All',
-    'New-In',
-    'Hot Deals',
-    'Clothing',
-    'Shoes',
-    'Accessories'
-  ];
-
   int _value = 0;
   List<MyCards> cards;
 
   TextEditingController _controller;
   void initState() {
     super.initState();
-
-    final List<String> clothes =
-        List.generate(10, (index) => "Title ${index + 1}");
-    final List<String> brands = [
-      'Adidas',
-      'Nike',
-    ];
-    final List<String> prices = List.generate(10, (i) {
-      int val = Random().nextInt(100);
-      return "\$$val";
-    });
-
-    products = List.generate(
-        10,
-        (i) => Product(
-            title: clothes[i % clothes.length],
-            brand: brands[i % brands.length],
-            price: prices[i % prices.length],
-            type: filter.sublist(1)[i % filter.sublist(1).length]));
-
     _controller = TextEditingController();
-
     cards = List.generate(10, (i) => MyCards(products[i]));
   }
 
@@ -99,15 +66,12 @@ class _BrowseScreenState extends State<BrowseScreen> {
     final position = context.watch<Position>();
     final productsLength = context.watch<CartList>().products.length;
     if (ModalRoute.of(context).settings.arguments != null) {
-      print(ModalRoute.of(context).settings.name);
       final arguments = ModalRoute.of(context).settings.arguments as Map;
       if (arguments['orderResults'] != null) {
         final List<Product> orderedProducts = arguments['orderResults'];
         for (Product order in orderedProducts) {
           if (!context.read<OrderList>().orderProducts.contains(order))
             context.read<OrderList>().addProduct(order);
-
-          print(order.title + order.price);
         }
       }
     }
@@ -210,13 +174,25 @@ class _BrowseScreenState extends State<BrowseScreen> {
                               children: [
                                 Expanded(
                                   child: TextField(
+                                    enabled: !position.pressed,
                                     style:
                                         Theme.of(context).textTheme.headline3,
                                     controller: _controller,
                                     maxLines: 1,
-                                    onSubmitted: (String val) {
-                                      print(val);
-                                    },
+                                    onSubmitted: (String val) => showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                              title: Text("Pressed Search"),
+                                              content: Text(
+                                                  "You searched ${_controller.text}"),
+                                              actions: [
+                                                FlatButton(
+                                                    child: Text("Continue"),
+                                                    onPressed: () =>
+                                                        Navigator.pop(context)),
+                                              ]);
+                                        }),
                                     decoration: InputDecoration(
                                       focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
@@ -232,22 +208,20 @@ class _BrowseScreenState extends State<BrowseScreen> {
                                 IconButton(
                                   color: Colors.black,
                                   icon: Icon(Icons.search, size: 20),
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                              title: Text("Pressed Search"),
-                                              content: Text(
-                                                  "You searched ${_controller.text}"),
-                                              actions: [
-                                                FlatButton(
-                                                    child: Text("Continue"),
-                                                    onPressed: () =>
-                                                        Navigator.pop(context)),
-                                              ]);
-                                        });
-                                  },
+                                  onPressed: () => showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                            title: Text("Pressed Search"),
+                                            content: Text(
+                                                "You searched ${_controller.text}"),
+                                            actions: [
+                                              FlatButton(
+                                                  child: Text("Continue"),
+                                                  onPressed: () =>
+                                                      Navigator.pop(context)),
+                                            ]);
+                                      }),
                                 ),
                               ],
                             )),

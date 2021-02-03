@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/utils/product.dart';
+import 'package:ecommerce_app/utils/configuration.dart';
 
 class MyDrawer extends StatefulWidget {
   final OrderList orderList;
@@ -10,21 +11,13 @@ class MyDrawer extends StatefulWidget {
 }
 
 class _MyDrawerState extends State<MyDrawer> {
-  final List<String> list = ['Browse', 'My orders', 'Categories', 'My Account'];
-
-  final List<Icon> icons = [
-    Icon(Icons.compare, color: Colors.white60),
-    Icon(Icons.content_paste, color: Colors.white60),
-    Icon(Icons.corporate_fare, color: Colors.white60),
-    Icon(Icons.contacts, color: Colors.white60)
-  ];
-
-  final List<String> links = ["/", "/orders", "/", "/account"];
-
   @override
   Widget build(BuildContext context) {
+    final _height = MediaQuery.of(context).size.height;
+    bool add_spacer = _height < 750 ? true : false;
+
     return Container(
-      width: MediaQuery.of(context).size.width,
+      height: _height,
       decoration: BoxDecoration(
           gradient: LinearGradient(
               begin: Alignment.centerLeft,
@@ -73,52 +66,49 @@ class _MyDrawerState extends State<MyDrawer> {
               ],
             ),
           ),
-          Expanded(
-            child: SizedBox(),
-          ),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
-            itemBuilder: (context, index) {
-              return Container(
-                padding: EdgeInsets.all(15.0),
-                alignment: Alignment.centerLeft,
-                child: FlatButton.icon(
-                    icon: icons[index],
-                    label: Text(list[index],
-                        style: TextStyle(color: Colors.black54)),
-                    onPressed: () {
-                      Navigator.pushNamed(context, links[index],
-                          arguments: {'orderList': widget.orderList});
+          add_spacer ? SizedBox.shrink() : Spacer(),
+          Flexible(
+            flex: 5,
+            child: ListView.builder(
+              // shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+              itemBuilder: (context, index) {
+                return Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
+                  alignment: Alignment.centerLeft,
+                  child: FlatButton.icon(
+                      icon: icons[index],
+                      label: Text(list[index],
+                          style: TextStyle(color: Colors.black54)),
+                      onPressed: () {
+                        Navigator.pushNamed(context, links[index],
+                            arguments: {'orderList': widget.orderList});
 
-                      widget.position.drawerTrigger(context);
-                    }),
-              );
-            },
-            itemCount: list.length,
+                        widget.position.drawerTrigger(context);
+                      }),
+                );
+              },
+              itemCount: list.length,
+            ),
           ),
-          Expanded(flex: 3, child: SizedBox()),
           Expanded(
             child: Container(
-              padding: EdgeInsets.only(bottom: 15.0),
+              padding: EdgeInsets.only(left: 10.0, bottom: 15.0),
               child: Row(
                 children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(top: 8.0, left: 8.0, bottom: 8.0),
-                    child: FlatButton.icon(
-                      label: Text(
-                        "Settings",
-                        style: TextStyle(color: Colors.black54),
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/settings');
-                        widget.position.drawerTrigger(context);
-                      },
-                      icon: Icon(
-                        Icons.settings,
-                        color: Colors.white60,
-                      ),
+                  FlatButton.icon(
+                    label: Text(
+                      "Settings",
+                      style: TextStyle(color: Colors.black54),
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/settings');
+                      widget.position.drawerTrigger(context);
+                    },
+                    icon: Icon(
+                      Icons.settings,
+                      color: Colors.white60,
                     ),
                   ),
                   Container(

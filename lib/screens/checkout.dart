@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/utils/product.dart';
 import 'package:ecommerce_app/screens/payment.dart';
+import 'package:ecommerce_app/utils/configuration.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class Checkout extends StatefulWidget {
@@ -10,15 +11,11 @@ class Checkout extends StatefulWidget {
 
 class _CheckoutState extends State<Checkout> {
   PageController _controller;
-  List<String> countries;
-  Map<String, String> cities;
   final _formkey = GlobalKey<FormState>();
   TextEditingController _nameController;
   TextEditingController _emailController;
   TextEditingController _addressController;
   TextEditingController _phoneController;
-  List<DropdownMenuItem<String>> countryList;
-  List<DropdownMenuItem<String>> cityList;
 
   String selectedCountry;
   String selectedCity;
@@ -26,37 +23,11 @@ class _CheckoutState extends State<Checkout> {
   @override
   void initState() {
     super.initState();
-    countries = [
-      "Mercury",
-      "Venus",
-      "Earth",
-      "Mars",
-      "Jupiter",
-      "Saturn",
-      "Uran",
-      "Neptun",
-      "Kazakhstan"
-    ];
     _controller = PageController(initialPage: 0);
     selectedCountry = "Earth";
     selectedCity = "Earth3";
-    cityList = List();
-    countryList = List();
 
-    countryList = List();
-    for (String country in countries) {
-      countryList.add(
-        DropdownMenuItem(
-          value: country,
-          child: Text(country),
-        ),
-      );
-    }
-
-    countries.asMap().forEach((index, country) => cityList.add(DropdownMenuItem(
-          value: "$country${index + 1}",
-          child: Text("$country${index + 1}"),
-        )));
+    constants();
 
     _nameController = TextEditingController();
     _emailController = TextEditingController();
