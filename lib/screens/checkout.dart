@@ -16,18 +16,47 @@ class _CheckoutState extends State<Checkout> {
   TextEditingController _emailController;
   TextEditingController _addressController;
   TextEditingController _phoneController;
-
   String selectedCountry;
   String selectedCity;
+
+  List<DropdownMenuItem<String>> countryList;
+  List<DropdownMenuItem<String>> cityList;
 
   @override
   void initState() {
     super.initState();
     _controller = PageController(initialPage: 0);
+
+    List<String> countries = [
+      "Mercury",
+      "Venus",
+      "Earth",
+      "Mars",
+      "Jupiter",
+      "Saturn",
+      "Uran",
+      "Neptun",
+      "Kazakhstan"
+    ];
+
+    countryList = List();
+    cityList = List();
+    for (String country in countries) {
+      countryList.add(
+        DropdownMenuItem(
+          value: country,
+          child: Text(country),
+        ),
+      );
+    }
+
+    countries.asMap().forEach((index, country) => cityList.add(DropdownMenuItem(
+          value: "$country${index + 1}",
+          child: Text("$country${index + 1}"),
+        )));
+
     selectedCountry = "Earth";
     selectedCity = "Earth3";
-
-    constants();
 
     _nameController = TextEditingController();
     _emailController = TextEditingController();

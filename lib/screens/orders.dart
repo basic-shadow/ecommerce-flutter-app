@@ -139,10 +139,11 @@ class _OrderCardState extends State<OrderCard> {
   @override
   Widget build(BuildContext context) {
     final int totalPrice =
-        int.parse(widget.product.price.substring(1)) * widget.product.quantity;
+        int.parse(widget.product.price.substring(1)) * widget.product.quantity +
+            int.parse(widget.product.shipPrice.substring(1));
     return Container(
       margin: EdgeInsets.only(top: 15.0, left: 8.0, right: 8.0),
-      height: 275,
+      height: 330,
       decoration: BoxDecoration(
         color: Colors.green[50],
         boxShadow: [
@@ -170,20 +171,55 @@ class _OrderCardState extends State<OrderCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("${widget.product.title}",
-                        style: TextStyle(fontSize: 18)),
+                        style: TextStyle(
+                            fontSize: 18, color: Colors.blueGrey[800])),
                     Padding(
-                      padding: const EdgeInsets.only(top: 7.0, left: 3.0),
+                      padding: const EdgeInsets.only(top: 4.0),
                       child: Text("${widget.product.brand}",
                           style:
                               TextStyle(fontSize: 12, color: Colors.black45)),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 15.0),
-                      child: Text(
-                          "${widget.product.price} x ${widget.product.quantity}",
-                          style: TextStyle(fontSize: 20, color: Colors.teal)),
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Size:",
+                            style: TextStyle(
+                                fontSize: 15.0, color: Colors.blueGrey[800]),
+                          ),
+                          SizedBox(width: 10),
+                          Text("${widget.product.size}",
+                              style: TextStyle(fontSize: 19.0))
+                        ],
+                      ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Color:",
+                            style: TextStyle(
+                                fontSize: 15.0, color: Colors.blueGrey[800]),
+                          ),
+                          SizedBox(width: 10),
+                          Text("${widget.product.color}",
+                              style: TextStyle(fontSize: 17.0))
+                        ],
+                      ),
+                    )
                   ],
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Text(
+                      "${widget.product.price} x ${widget.product.quantity}",
+                      style: TextStyle(fontSize: 20, color: Colors.teal)),
                 ),
               ),
             ],
@@ -200,13 +236,32 @@ class _OrderCardState extends State<OrderCard> {
                 ),
                 Text(
                   "${widget.product.quantity}",
-                  style: TextStyle(fontSize: 15),
+                  style: TextStyle(fontSize: 16.0),
                 ),
               ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Shipment",
+                  style: TextStyle(color: Colors.black54),
+                ),
+                Text(
+                  "${widget.product.shipPrice}",
+                  style: TextStyle(fontSize: 16.0),
+                )
+              ],
+            ),
+          ),
+          Divider(color: Colors.blueGrey[200]),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 14.0, vertical: 5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

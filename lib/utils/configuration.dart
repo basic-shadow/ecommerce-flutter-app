@@ -35,39 +35,6 @@ final List<Product> products = List.generate(
         price: prices[i % prices.length],
         type: filter.sublist(1)[i % filter.sublist(1).length]));
 
-// checkout.dart constants
-
-List<String> countries = [
-  "Mercury",
-  "Venus",
-  "Earth",
-  "Mars",
-  "Jupiter",
-  "Saturn",
-  "Uran",
-  "Neptun",
-  "Kazakhstan"
-];
-
-List<DropdownMenuItem<String>> countryList = List();
-List<DropdownMenuItem<String>> cityList = List();
-
-constants() {
-  for (String country in countries) {
-    countryList.add(
-      DropdownMenuItem(
-        value: country,
-        child: Text(country),
-      ),
-    );
-  }
-
-  countries.asMap().forEach((index, country) => cityList.add(DropdownMenuItem(
-        value: "$country${index + 1}",
-        child: Text("$country${index + 1}"),
-      )));
-}
-
 // drawer.dart constants
 
 final List<String> list = ['Browse', 'My orders', 'Categories', 'My Account'];
