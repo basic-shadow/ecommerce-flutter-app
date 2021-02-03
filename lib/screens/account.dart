@@ -141,8 +141,7 @@ class _AccountState extends State<Account> {
                                 icon: Icon(Icons.settings,
                                     color: Colors.blueGrey[700]),
                                 onPressed: () => Navigator.of(context)
-                                    .pushNamedAndRemoveUntil('/login',
-                                        (Route<dynamic> route) => false),
+                                    .pushNamed('/settings'),
                               ),
                             ),
                           ),
